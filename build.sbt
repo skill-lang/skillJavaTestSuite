@@ -14,7 +14,7 @@ scalacOptions ++= Opts.compile.encoding("UTF8")
 
 libraryDependencies ++= Seq(
 	"junit" % "junit" % "4.10" % "test",
-	"org.scalatest" % "scalatest_2.11" % "2.1.7" % "test"
+    "com.novocode" % "junit-interface" % "0.11" % "test"
 )
 
 testOptions in Test <+= (target in Test) map {
