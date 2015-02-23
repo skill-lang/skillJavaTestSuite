@@ -16,7 +16,7 @@ public class ReadTest {
                 "../../src/test/resources/genbinary/<empty>/accept/unicode-reference.sf",
                 Mode.Read);
         Unicode target = sf.Unicodes().getByID(1);
-        Assert.assertEquals("i", target.one);
+        Assert.assertEquals("1", target.one);
         Assert.assertEquals("ö", target.two);
         Assert.assertEquals("☢", target.three);
     }
