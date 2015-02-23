@@ -39,7 +39,14 @@ public class SimpleRead {
     @Test
     public void read16() throws Exception {
         SkillFile sf = SkillFile.open("test/age16.sf", Mode.Read);
-        System.out.println(sf.Ages().size());
+        Assert.assertEquals(3400000, sf.Ages().size());
+        int zeroes = 0;
+        for (Age a : sf.Ages()) {
+            Assert.assertTrue("negative ages", a.getAge() >= 0);
+            if (0 == a.getAge())
+                zeroes++;
+        }
+        Assert.assertEquals("missed some zeroes?", 53725, zeroes);
     }
 
 }
