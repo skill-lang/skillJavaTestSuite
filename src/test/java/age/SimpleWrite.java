@@ -71,23 +71,23 @@ public class SimpleWrite {
         Path path = tmpFile("write.make");
 
         SkillFile σ = SkillFile.open(path, Mode.Create, Mode.Write);
-        σ.Ages().make(1);
-        σ.Ages().make(28);
+        Assert.assertEquals(1, σ.Ages().make(1).getAge());
+        Assert.assertEquals(28, σ.Ages().make(28).getAge());
         σ.close();
 
-        Assert.assertEquals(sha256(path), sha256(new File("test/age.sf").toPath()));
+        Assert.assertEquals(sha256(path), sha256(new File("test/ageUnrestricted.sf").toPath()));
     }
 
     @Test
     public void normalizeAge16() throws Exception {
         SkillFile σ = SkillFile.open("test/age16.sf");
 
-        long min = Long.MAX_VALUE;
+        long max = Long.MIN_VALUE;
         for (Age a : σ.Ages())
-            min = Math.min(a.getAge(), min);
+            max = Math.max(a.getAge(), max);
 
         for (Age a : σ.Ages())
-            a.age -= min;
+            a.setAge(a.getAge() - max);
 
         Path tmpFile = tmpFile("normalized");
         σ.changePath(tmpFile);
