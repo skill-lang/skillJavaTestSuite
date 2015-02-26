@@ -31,29 +31,19 @@
             <src path="src/main/java"/>
             <classpath refid="skillJavaTestsuite.classpath"/>
         </javac>
-        <javac debug="true" debuglevel="${debuglevel}" destdir="target/scala-2.11/classes" includeantruntime="false" source="${source}" target="${target}">
+        <javac debug="true" debuglevel="${debuglevel}" destdir="target/scala-2.11/test-classes" includeantruntime="false" source="${source}" target="${target}">
             <src path="src/test/java"/>
             <classpath refid="skillJavaTestsuite.classpath"/>
         </javac>
     </target>
+
     <target depends="build" name="test">
         <mkdir dir="${junit.output.dir}"/>
         <junit fork="yes" printsummary="withOutAndErr">
             <formatter type="xml"/>
-            <test name="age.GenericAgeReadTest" todir="${junit.output.dir}"/>
-            <test name="age.SimpleRead" todir="${junit.output.dir}"/>
-            <test name="annotation.GenericAnnotationReadTest" todir="${junit.output.dir}"/>
-            <test name="constants.GenericConstantsReadTest" todir="${junit.output.dir}"/>
-            <test name="container.GenericContainerReadTest" todir="${junit.output.dir}"/>
-            <test name="empty.GenericEmptyReadTest" todir="${junit.output.dir}"/>
-            <test name="enums.GenericEnumsReadTest" todir="${junit.output.dir}"/>
-            <test name="escaping.GenericEscapingReadTest" todir="${junit.output.dir}"/>
-            <test name="floats.GenericFloatsReadTest" todir="${junit.output.dir}"/>
-            <test name="graph.GenericGraphReadTest" todir="${junit.output.dir}"/>
-            <test name="number.GenericNumberReadTest" todir="${junit.output.dir}"/>
-            <test name="subtypes.GenericSubtypesReadTest" todir="${junit.output.dir}"/>
-            <test name="unicode.GenericUnicodeReadTest" todir="${junit.output.dir}"/>
-            <test name="user.GenericUserReadTest" todir="${junit.output.dir}"/>
+            <batchtest todir="${junit.output.dir}">
+                <fileset dir="target/scala-2.11/test-classes" includes="**/*.class"/>
+            </batchtest>
             <classpath refid="skillJavaTestsuite.classpath"/>
         </junit>
     </target>
