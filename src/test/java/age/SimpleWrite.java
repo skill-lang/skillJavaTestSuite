@@ -3,44 +3,18 @@ package age;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.security.MessageDigest;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 
 import age.api.SkillFile;
+
+import common.CommonTest;
+
 import de.ust.skill.common.java.api.SkillFile.Mode;
 
-@SuppressWarnings("static-method")
-public class SimpleWrite {
-
-    /**
-     * TODO move to common tests
-     */
-    protected Path tmpFile(String string) throws Exception {
-        File r = File.createTempFile(string, ".sf");
-        // r.deleteOnExit();
-        return r.toPath();
-    }
-
-    /**
-     * TODO move to common tests
-     */
-    protected final String sha256(String name) throws Exception {
-        return sha256(new File("src/test/resources/" + name).toPath());
-    }
-
-    /**
-     * TODO move to common tests
-     */
-    protected final String sha256(Path path) throws Exception {
-        byte[] bytes = Files.readAllBytes(path);
-        StringBuilder sb = new StringBuilder();
-        for (byte b : MessageDigest.getInstance("SHA-256").digest(bytes))
-            sb.append(String.format("%02X", b));
-        return sb.toString();
-    }
+public class SimpleWrite extends CommonTest {
 
     @Test
     public void writeCopyReflective() throws Exception {
