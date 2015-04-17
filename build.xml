@@ -60,7 +60,7 @@
 	        </classpath>
             <formatter type="xml"/>
             <batchtest todir="${junit.output.dir}">
-                <fileset dir="target/scala-2.11/test-classes" includes="**/*.class"/>
+                <fileset dir="target/scala-2.11/test-classes" includes="**/*.class" excludes="common"/>
             </batchtest>
         </junit>
     </target>
