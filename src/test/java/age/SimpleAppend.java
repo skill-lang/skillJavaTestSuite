@@ -20,18 +20,18 @@ public class SimpleAppend extends CommonTest {
     public void appendExample() throws Exception {
         Path path = tmpFile("append.test");
 
-        SkillFile sf = SkillFile.open("src/test/resources/date-example.sf", Mode.Read, Mode.Append);
+        SkillFile sf = SkillFile.open("src/test/resources/age-example.sf", Mode.Read, Mode.Append);
         sf.Ages().make(2);
         sf.Ages().make(3);
         sf.changePath(path);
         sf.close();
 
-        Assert.assertEquals(sha256(path), sha256(new File("src/test/resources/date-example-append.sf").toPath()));
+        Assert.assertEquals(sha256(path), sha256(new File("src/test/resources/age-example-append.sf").toPath()));
         Iterator<Age> as = SkillFile.open(path).Ages().iterator();
-        Assert.assertEquals(as.next(), 1);
-        Assert.assertEquals(as.next(), -1);
-        Assert.assertEquals(as.next(), 2);
-        Assert.assertEquals(as.next(), 3);
+        Assert.assertEquals(as.next().age, 1);
+        Assert.assertEquals(as.next().age, -1);
+        Assert.assertEquals(as.next().age, 2);
+        Assert.assertEquals(as.next().age, 3);
         Assert.assertFalse(as.hasNext());
     }
 
