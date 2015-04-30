@@ -16,7 +16,7 @@ import de.ust.skill.common.java.api.SkillFile.Mode;
 public class SimpleWrite extends CommonTest {
 
     @Test
-    private void createAndWrite() throws Exception {
+    public void createAndWrite() throws Exception {
         SkillFile sf = SkillFile.open(tmpFile("createAndWrite"), Mode.Create, Mode.Write);
 
         C c = sf.Cs().make();
@@ -27,7 +27,7 @@ public class SimpleWrite extends CommonTest {
     }
 
     @Test
-    private void insertAB() throws Exception {
+    public void insertAB() throws Exception {
         SkillFile sf = SkillFile.open(tmpFile("insertAB"), Mode.Create, Mode.Write);
 
         sf.As().make(sf.Bs().make());
