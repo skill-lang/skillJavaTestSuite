@@ -5,7 +5,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
 
-public class CommonTest {
+import org.junit.Ignore;
+
+@Ignore
+abstract public class CommonTest {
 
     public CommonTest() {
         super();
