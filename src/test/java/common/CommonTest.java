@@ -4,11 +4,36 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.junit.Ignore;
 
+import de.ust.skill.common.java.api.Access;
+import de.ust.skill.common.java.api.FieldDeclaration;
+import de.ust.skill.common.java.api.FieldType;
+import de.ust.skill.common.java.api.SkillException;
+import de.ust.skill.common.java.api.SkillFile;
+import de.ust.skill.common.java.internal.SkillObject;
+import de.ust.skill.common.java.internal.fieldDeclarations.AutoField;
+import de.ust.skill.common.java.internal.fieldTypes.ConstantIntegerType;
+
+/**
+ * Some test code commonly used by all tests.
+ * 
+ * @author Timm Felden
+ */
 @Ignore
 abstract public class CommonTest {
+
+    /**
+     * This constant is used to guide reflective init
+     */
+    private static final int reflectiveInitSize = 10;
 
     public CommonTest() {
         super();
@@ -41,4 +66,86 @@ abstract public class CommonTest {
         return sb.toString();
     }
 
+    protected static void reflectiveInit(SkillFile sf) {
+        // create instances
+        sf.allTypesStream().parallel().forEach(t -> {
+            try {
+                for (int i = reflectiveInitSize; i != 0; i--)
+                    t.make();
+            } catch (SkillException e) {
+                // the type can not have more instances
+            }
+        });
+
+        // set fields
+        sf.allTypesStream().parallel().forEach(t -> {
+            for (SkillObject o : t)
+                for (FieldDeclaration<?> f : t.fields())
+                    if (!(f instanceof AutoField) && !(f.type() instanceof ConstantIntegerType<?>))
+                        set(sf, o, f);
+        });
+    }
+
+    private static <T, Obj extends SkillObject> void set(SkillFile sf, Obj o, FieldDeclaration<T> f) {
+        T v = value(sf, f.type());
+        // System.out.printf("%s#%d.%s = %s\n", o.getClass().getName(), o.getSkillID(), f.name(), v.toString());
+        o.set(f, v);
+    }
+
+    /**
+     * unchecked, because the insane amount of casts is necessary to reflect the implicit value based type system
+     */
+    @SuppressWarnings("unchecked")
+    private static <T> T value(SkillFile sf, FieldType<T> type) {
+        if (type instanceof Access) {
+            // get a ThreadLocalRandom.current()om objcet
+            Iterator<T> is = (Iterator<T>) ((Access<?>) type).iterator();
+            for (int i = ThreadLocalRandom.current().nextInt(reflectiveInitSize) % 200; i != 0; i--)
+                is.next();
+            return is.next();
+        }
+
+        switch (type.typeID()) {
+        case 5:
+            // ThreadLocalRandom.current()om object
+            Iterator<? extends Access<? extends SkillObject>> ts = sf.allTypes().iterator();
+            for (int i = ThreadLocalRandom.current().nextInt(20); i != 0; i--)
+                ts.next();
+            Access<? extends SkillObject> t = ts.next();
+            Iterator<? extends SkillObject> is = t.iterator();
+            for (int i = ThreadLocalRandom.current().nextInt(reflectiveInitSize) % 200; i != 0; i--)
+                is.next();
+            return (T) is.next();
+
+        case 6:
+            return (T) (Boolean) ThreadLocalRandom.current().nextBoolean();
+        case 7:
+            return (T) (Byte) (byte) ThreadLocalRandom.current().nextInt(reflectiveInitSize);
+        case 8:
+            return (T) (Short) (short) ThreadLocalRandom.current().nextInt(reflectiveInitSize);
+        case 9:
+            return (T) (Integer) ThreadLocalRandom.current().nextInt(reflectiveInitSize);
+        case 10:
+        case 11:
+            return (T) (Long) (ThreadLocalRandom.current().nextLong() % reflectiveInitSize);
+        case 12:
+            return (T) (Float) ThreadLocalRandom.current().nextFloat();
+        case 13:
+            return (T) (Double) ThreadLocalRandom.current().nextDouble();
+        case 14:
+            return (T) "☢☢☢";
+
+        case 15:
+        case 17:
+            return (T) new ArrayList<Object>();
+        case 18:
+            return (T) new LinkedList<Object>();
+        case 19:
+            return (T) new HashSet<Object>();
+        case 20:
+            return (T) new HashMap<Object, Object>();
+        default:
+            throw new IllegalStateException();
+        }
+    }
 }

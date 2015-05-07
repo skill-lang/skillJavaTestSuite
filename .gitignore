@@ -2,7 +2,7 @@
 src/main
 
 # generic read tests
-**/Generic*ReadTest.java
+**/Generic*Test.java
 
 # ignore class files
 *.class
