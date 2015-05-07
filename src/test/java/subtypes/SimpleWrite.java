@@ -13,6 +13,7 @@ import de.ust.skill.common.java.api.SkillFile.Mode;
  * 
  * @author Timm Felden
  */
+@SuppressWarnings("static-method")
 public class SimpleWrite extends CommonTest {
 
     @Test

@@ -4,8 +4,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 import age.api.SkillFile;
@@ -14,6 +13,7 @@ import common.CommonTest;
 
 import de.ust.skill.common.java.api.SkillFile.Mode;
 
+@SuppressWarnings("static-method")
 public class SimpleWrite extends CommonTest {
 
     @Test
