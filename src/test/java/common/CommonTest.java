@@ -21,6 +21,7 @@ import de.ust.skill.common.java.api.SkillFile;
 import de.ust.skill.common.java.internal.SkillObject;
 import de.ust.skill.common.java.internal.fieldDeclarations.AutoField;
 import de.ust.skill.common.java.internal.fieldTypes.ConstantIntegerType;
+import de.ust.skill.common.java.internal.fieldTypes.ConstantLengthArray;
 
 /**
  * Some test code commonly used by all tests.
@@ -137,7 +138,13 @@ abstract public class CommonTest {
         case 14:
             return (T) "☢☢☢";
 
-        case 15:
+        case 15: {
+            ConstantLengthArray<T> cla = (ConstantLengthArray<T>) type;
+            ArrayList<Object> rval = new ArrayList<>((int) cla.length);
+            for (int i = (int) cla.length; i != 0; i--)
+                rval.add(value(sf, cla.groundType));
+            return (T) rval;
+        }
         case 17:
             return (T) new ArrayList<Object>();
         case 18:
