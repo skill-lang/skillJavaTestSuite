@@ -98,7 +98,7 @@ abstract public class CommonTest {
     @SuppressWarnings("unchecked")
     private static <T> T value(SkillFile sf, FieldType<T> type) {
         if (type instanceof Access) {
-            // get a ThreadLocalRandom.current()om objcet
+            // get a random object
             Iterator<T> is = (Iterator<T>) ((Access<?>) type).iterator();
             for (int i = ThreadLocalRandom.current().nextInt(reflectiveInitSize) % 200; i != 0; i--)
                 is.next();
@@ -107,13 +107,15 @@ abstract public class CommonTest {
 
         switch (type.typeID()) {
         case 5:
-            // ThreadLocalRandom.current()om object
+            // random type
             Iterator<? extends Access<? extends SkillObject>> ts = sf.allTypes().iterator();
-            for (int i = ThreadLocalRandom.current().nextInt(20); i != 0; i--)
-                ts.next();
             Access<? extends SkillObject> t = ts.next();
+            for (int i = ThreadLocalRandom.current().nextInt(200); i != 0 && ts.hasNext(); i--)
+                t = ts.next();
+
+            // random object
             Iterator<? extends SkillObject> is = t.iterator();
-            for (int i = ThreadLocalRandom.current().nextInt(reflectiveInitSize) % 200; i != 0; i--)
+            for (int i = ThreadLocalRandom.current().nextInt(Math.min(200, reflectiveInitSize)); i != 0; i--)
                 is.next();
             return (T) is.next();
 
