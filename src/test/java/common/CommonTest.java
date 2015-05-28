@@ -22,6 +22,7 @@ import de.ust.skill.common.java.internal.SkillObject;
 import de.ust.skill.common.java.internal.fieldDeclarations.AutoField;
 import de.ust.skill.common.java.internal.fieldTypes.ConstantIntegerType;
 import de.ust.skill.common.java.internal.fieldTypes.ConstantLengthArray;
+import de.ust.skill.common.java.internal.fieldTypes.SingleArgumentType;
 
 /**
  * Some test code commonly used by all tests.
@@ -145,12 +146,30 @@ abstract public class CommonTest {
                 rval.add(value(sf, cla.groundType));
             return (T) rval;
         }
-        case 17:
-            return (T) new ArrayList<Object>();
-        case 18:
-            return (T) new LinkedList<Object>();
-        case 19:
-            return (T) new HashSet<Object>();
+        case 17: {
+            SingleArgumentType<?, ?> cla = (SingleArgumentType<?, ?>) type;
+            int length = (int) Math.sqrt(reflectiveInitSize);
+            ArrayList<Object> rval = new ArrayList<>(length);
+            while (0 != length--)
+                rval.add(value(sf, cla.groundType));
+            return (T) rval;
+        }
+        case 18: {
+            SingleArgumentType<?, ?> cla = (SingleArgumentType<?, ?>) type;
+            int length = (int) Math.sqrt(reflectiveInitSize);
+            LinkedList<Object> rval = new LinkedList<>();
+            while (0 != length--)
+                rval.add(value(sf, cla.groundType));
+            return (T) rval;
+        }
+        case 19: {
+            SingleArgumentType<?, ?> cla = (SingleArgumentType<?, ?>) type;
+            int length = (int) Math.sqrt(reflectiveInitSize);
+            HashSet<Object> rval = new HashSet<>();
+            while (0 != length--)
+                rval.add(value(sf, cla.groundType));
+            return (T) rval;
+        }
         case 20:
             return (T) new HashMap<Object, Object>();
         default:
