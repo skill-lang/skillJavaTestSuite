@@ -24,7 +24,9 @@ public class SimpleWrite extends CommonTest {
         sf.changePath(path);
         sf.close();
 
-        Assert.assertEquals(sha256(path), sha256(new File("src/test/resources/date-example.sf").toPath()));
+        Assert.assertTrue(sha256(path).equals(sha256(new File("src/test/resources/date-example.sf").toPath()))
+                || sha256(path).equals(
+                        sha256(new File("src/test/resources/date-example-with-empty-age-pool.sf").toPath())));
     }
 
     // copy of §6.6 example"
