@@ -81,10 +81,14 @@ abstract public class CommonTest {
 
         // set fields
         sf.allTypesStream().parallel().forEach(t -> {
-            for (SkillObject o : t)
-                for (FieldDeclaration<?> f : t.fields())
+            for (SkillObject o : t) {
+                Iterator<? extends FieldDeclaration<?>> it = t.fields();
+                while (it.hasNext()) {
+                    final FieldDeclaration<?> f = it.next();
                     if (!(f instanceof AutoField) && !(f.type() instanceof ConstantIntegerType<?>))
                         set(sf, o, f);
+                }
+            }
         });
     }
 
