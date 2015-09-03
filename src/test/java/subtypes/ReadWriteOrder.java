@@ -6,11 +6,9 @@ import java.util.Iterator;
 import org.junit.Assert;
 import org.junit.Test;
 
-import subtypes.api.SkillFile;
-
 import common.CommonTest;
-
 import de.ust.skill.common.java.api.SkillFile.Mode;
+import subtypes.api.SkillFile;
 
 /**
  * Two short tests that check type order implementation.
@@ -24,13 +22,84 @@ public class ReadWriteOrder extends CommonTest {
     }
 
     @Test
+    public void makeSubtypesWAA() throws Exception {
+        Path file = tmpFile("make.subtype.waa");
+        {
+            final SkillFile sf = SkillFile.open(file, Mode.Create, Mode.Append);
+
+            java.util.function.Supplier<A> addA = () -> {
+                A a = sf.As().make();
+                a.setA(a);
+                return a;
+            };
+            java.util.function.Supplier<B> addB = () -> {
+                B a = sf.Bs().make();
+                a.setA(a);
+                a.setB(a);
+                return a;
+            };
+            java.util.function.Supplier<C> addC = () -> {
+                C a = sf.Cs().make();
+                a.setA(a);
+                a.setC(a);
+                return a;
+            };
+            java.util.function.Supplier<D> addD = () -> {
+                D a = sf.Ds().make();
+                a.setA(a);
+                a.setB(a);
+                a.setD(a);
+                return a;
+            };
+            addC.get();
+            addA.get();
+            addB.get();
+            addA.get();
+            addB.get();
+            addB.get();
+            sf.flush();
+
+            addB.get();
+            addD.get();
+            addB.get();
+            addD.get();
+            sf.flush();
+
+            addA.get();
+            addD.get();
+            addC.get();
+            sf.close();
+        }
+        {
+            SkillFile sf = SkillFile.open(file, Mode.Read);
+
+            final String types = "aaabbbbbdddcc";
+
+            for (int i = 0; i < types.length(); i++) {
+                A obj = sf.As().getByID(i + 1);
+                Assert.assertEquals(obj.getClass().getSimpleName().toLowerCase().charAt(0), types.charAt(i));
+            }
+        }
+    }
+
+    @Test
+    public void resourcesTmpTest() throws Exception {
+        SkillFile sf = SkillFile
+                .open("/home/feldentm/projekte/forschung/skill/testsuites/ada/tmp/test-subtypes-write.sf");
+
+        for (A a : sf.As()) {
+            System.out.println(a.prettyString());
+        }
+    }
+
+    @Test
     public void subtypesRead() throws Exception {
         SkillFile state = read("localBasePoolOffset.sf");
         String types = "aabbbcbbddacd";
 
         // check types
-        String actualTypes = state.As().stream().map(a -> a.getClass().getSimpleName().toLowerCase())
-                .reduce("", String::concat);
+        String actualTypes = state.As().stream().map(a -> a.getClass().getSimpleName().toLowerCase()).reduce("",
+                String::concat);
         Assert.assertEquals("type order missmatch", types, actualTypes);
 
         // check fields (all fields are self-references)

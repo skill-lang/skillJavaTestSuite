@@ -8,9 +8,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import age.api.SkillFile;
-
 import common.CommonTest;
-
 import de.ust.skill.common.java.api.SkillFile.Mode;
 
 @SuppressWarnings("static-method")
