@@ -66,29 +66,32 @@ public class ReadWriteOrder extends CommonTest {
             sf.flush();
 
             addA.get();
-            addD.get();
             addC.get();
+            addD.get();
             sf.close();
         }
+        // write order
         {
             SkillFile sf = SkillFile.open(file, Mode.Read);
 
-            final String types = "aaabbbbbdddcc";
+            final String types = "aabbbcbbddadc";
 
             for (int i = 0; i < types.length(); i++) {
                 A obj = sf.As().getByID(i + 1);
                 Assert.assertEquals(obj.getClass().getSimpleName().toLowerCase().charAt(0), types.charAt(i));
             }
         }
-    }
+        // type order
+        {
+            SkillFile sf = SkillFile.open(file, Mode.Read);
 
-    @Test
-    public void resourcesTmpTest() throws Exception {
-        SkillFile sf = SkillFile
-                .open("/home/feldentm/projekte/forschung/skill/testsuites/ada/tmp/test-subtypes-write.sf");
+            final String types = "aaabbbbbdddcc";
 
-        for (A a : sf.As()) {
-            System.out.println(a.prettyString());
+            Iterator<A> as = sf.As().typeOrderIterator();
+            for (int i = 0; i < types.length(); i++) {
+                A obj = as.next();
+                Assert.assertEquals(obj.getClass().getSimpleName().toLowerCase().charAt(0), types.charAt(i));
+            }
         }
     }
 
