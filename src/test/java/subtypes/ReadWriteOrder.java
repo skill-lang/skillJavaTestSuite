@@ -93,6 +93,19 @@ public class ReadWriteOrder extends CommonTest {
                 Assert.assertEquals(obj.getClass().getSimpleName().toLowerCase().charAt(0), types.charAt(i));
             }
         }
+        // self references
+        {
+            SkillFile sf = SkillFile.open(file, Mode.Read);
+
+            for (A a : sf.As())
+                Assert.assertEquals(a, a.getA());
+            for (B a : sf.Bs())
+                Assert.assertEquals(a, a.getB());
+            for (C a : sf.Cs())
+                Assert.assertEquals(a, a.getC());
+            for (D a : sf.Ds())
+                Assert.assertEquals(a, a.getD());
+        }
     }
 
     @Test
