@@ -20,6 +20,7 @@ import de.ust.skill.common.java.api.SkillException;
 import de.ust.skill.common.java.api.SkillFile;
 import de.ust.skill.common.java.internal.SkillObject;
 import de.ust.skill.common.java.internal.fieldDeclarations.AutoField;
+import de.ust.skill.common.java.internal.fieldDeclarations.InterfaceField;
 import de.ust.skill.common.java.internal.fieldTypes.ConstantIntegerType;
 import de.ust.skill.common.java.internal.fieldTypes.ConstantLengthArray;
 import de.ust.skill.common.java.internal.fieldTypes.SingleArgumentType;
@@ -74,7 +75,7 @@ abstract public class CommonTest {
             try {
                 for (int i = reflectiveInitSize; i != 0; i--)
                     t.make();
-            } catch (SkillException e) {
+            } catch (@SuppressWarnings("unused") SkillException e) {
                 // the type can not have more instances
             }
         });
@@ -85,7 +86,8 @@ abstract public class CommonTest {
                 Iterator<? extends FieldDeclaration<?>> it = t.fields();
                 while (it.hasNext()) {
                     final FieldDeclaration<?> f = it.next();
-                    if (!(f instanceof AutoField) && !(f.type() instanceof ConstantIntegerType<?>))
+                    if (!(f instanceof AutoField) && !(f.type() instanceof ConstantIntegerType<?>)
+                            && !(f instanceof InterfaceField))
                         set(sf, o, f);
                 }
             }
