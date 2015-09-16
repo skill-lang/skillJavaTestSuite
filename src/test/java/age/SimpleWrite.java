@@ -27,6 +27,12 @@ public class SimpleWrite extends CommonTest {
                         sha256(new File("src/test/resources/date-example-with-empty-age-pool.sf").toPath())));
     }
 
+    @Test
+    public void reflectiveWriteNode() throws Exception {
+        SkillFile sf = SkillFile.open("src/test/resources/fourColoredNodes.sf", Mode.Read, Mode.Write);
+        sf.close();
+    }
+
     // copy of §6.6 example"
     @Test
     public void writeCopy() throws Exception {
