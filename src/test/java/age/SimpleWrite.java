@@ -30,6 +30,7 @@ public class SimpleWrite extends CommonTest {
     @Test
     public void reflectiveWriteNode() throws Exception {
         SkillFile sf = SkillFile.open("src/test/resources/fourColoredNodes.sf", Mode.Read, Mode.Write);
+        sf.changePath(tmpFile("reflective.write"));
         sf.close();
     }
 
