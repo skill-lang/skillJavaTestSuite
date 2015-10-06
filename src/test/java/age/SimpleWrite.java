@@ -3,6 +3,7 @@ package age;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Random;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -77,6 +78,27 @@ public class SimpleWrite extends CommonTest {
             Assert.assertEquals(-1, sf.Ages().getByID(1).age);
             Assert.assertEquals(31337, sf.Ages().getByID(2).age);
             Assert.assertEquals(1091986, sf.Ages().getByID(3).age);
+        }
+    }
+
+    @Test
+    public void randomValues() throws Exception {
+        Path path = tmpFile("write.multibyte");
+
+        // write file
+        {
+            SkillFile sf = SkillFile.open(path, Mode.Create, Mode.Write);
+            Random rand = new Random(31337);
+            for (int i = 1000000; i != 0; i--)
+                sf.Ages().make(rand.nextLong());
+            sf.close();
+        }
+        // read file
+        {
+            SkillFile sf = SkillFile.open(path);
+            Random rand = new Random(31337);
+            for (Age age : sf.Ages())
+                Assert.assertEquals(rand.nextLong(), age.age);
         }
     }
 
