@@ -22,9 +22,9 @@ public class SimpleWrite extends CommonTest {
         sf.changePath(path);
         sf.close();
 
-        Assert.assertTrue(sha256(path).equals(sha256(new File("src/test/resources/date-example.sf").toPath()))
-                || sha256(path).equals(
-                        sha256(new File("src/test/resources/date-example-with-empty-age-pool.sf").toPath())));
+        Assert.assertTrue(
+                sha256(path).equals(sha256(new File("src/test/resources/date-example.sf").toPath())) || sha256(path)
+                        .equals(sha256(new File("src/test/resources/date-example-with-empty-age-pool.sf").toPath())));
     }
 
     @Test
@@ -57,6 +57,27 @@ public class SimpleWrite extends CommonTest {
         σ.close();
 
         Assert.assertEquals(sha256(path), sha256(new File("test/ageUnrestricted.sf").toPath()));
+    }
+
+    @Test
+    public void writeMultiByteValues() throws Exception {
+        Path path = tmpFile("write.multibyte");
+
+        // write file
+        {
+            SkillFile sf = SkillFile.open(path, Mode.Create, Mode.Write);
+            sf.Ages().make(-1);
+            sf.Ages().make(31337);
+            sf.Ages().make(1091986);
+            sf.close();
+        }
+        // read file
+        {
+            SkillFile sf = SkillFile.open(path);
+            Assert.assertEquals(-1, sf.Ages().getByID(1).age);
+            Assert.assertEquals(31337, sf.Ages().getByID(2).age);
+            Assert.assertEquals(1091986, sf.Ages().getByID(3).age);
+        }
     }
 
     @Test
