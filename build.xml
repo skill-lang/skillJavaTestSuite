@@ -35,6 +35,7 @@
         <javac debug="true" debuglevel="${debuglevel}" destdir="target/scala-2.11/classes" includeantruntime="false" source="${source}" target="${target}">
             <src path="src/main/java"/>
             <classpath refid="skillJavaTestsuite.classpath"/>
+    		<compilerarg value="-Xlint:all"/>
         </javac>
     </target>
 
@@ -42,6 +43,7 @@
         <javac debug="true" debuglevel="${debuglevel}" destdir="target/scala-2.11/test-classes" includeantruntime="false" source="${source}" target="${target}">
             <src path="src/test/java"/>
             <classpath refid="skillJavaTestsuite.classpath"/>
+    		<compilerarg value="-Xlint:all"/>
         </javac>
     <jar destfile="java.tests.jar"
       basedir="target/scala-2.11/test-classes"
