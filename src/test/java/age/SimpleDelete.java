@@ -10,7 +10,7 @@ import common.CommonTest;
 import de.ust.skill.common.java.api.SkillFile.Mode;
 
 /**
- * Make some instances and delete them aftewards.
+ * Make some instances and delete them afterwards.
  * 
  * @author Timm Felden
  */
@@ -46,4 +46,26 @@ public class SimpleDelete extends CommonTest {
         Assert.assertEquals("ensure that no instance remains", 0, read(sf.currentPath()).Ages().size());
     }
 
+    @Test
+    public void writeDeleteSome() throws Exception {
+        final int count = 100;
+
+        SkillFile sf = open("writeDelete");
+        for (int i = 0; i < count; i++)
+            sf.Ages().make(i);
+
+        sf.flush();
+
+        Assert.assertEquals("check size", count, read(sf.currentPath()).Ages().size());
+
+        // delete all instances
+        for (Age a : sf.Ages())
+            if (a.getAge() < count / 10)
+                a.delete();
+
+        sf.close();
+
+        Assert.assertEquals("ensure that no instance remains", (int) (count * .9),
+                read(sf.currentPath()).Ages().size());
+    }
 }
