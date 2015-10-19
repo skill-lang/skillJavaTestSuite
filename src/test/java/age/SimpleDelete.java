@@ -39,7 +39,7 @@ public class SimpleDelete extends CommonTest {
 
         // delete all instances
         for (Age a : sf.Ages())
-            a.delete();
+            sf.delete(a);
 
         sf.close();
 
@@ -61,7 +61,7 @@ public class SimpleDelete extends CommonTest {
         // delete all instances
         for (Age a : sf.Ages())
             if (a.getAge() < count / 10)
-                a.delete();
+                sf.delete(a);
 
         sf.close();
 
