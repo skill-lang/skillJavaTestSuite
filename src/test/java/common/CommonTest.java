@@ -32,6 +32,8 @@ import de.ust.skill.common.java.internal.fieldTypes.SingleArgumentType;
  */
 @Ignore
 abstract public class CommonTest {
+	
+	public final boolean isWindows = de.ust.skill.common.jvm.streams.FileOutputStream.isWindows;
 
     /**
      * This constant is used to guide reflective init
@@ -47,7 +49,7 @@ abstract public class CommonTest {
      */
     protected static Path tmpFile(String string) throws Exception {
         File r = File.createTempFile(string, ".sf");
-        r.deleteOnExit();
+        // r.deleteOnExit();
         return r.toPath();
     }
 
