@@ -17,59 +17,55 @@ import de.ust.skill.common.java.api.SkillFile.Mode;
 @SuppressWarnings("static-method")
 public class SimpleDelete extends CommonTest {
 
-	private static final SkillFile open(String name) throws Exception {
-		return SkillFile.open(tmpFile(name), Mode.Create, Mode.Write);
-	}
+    private static final SkillFile open(String name) throws Exception {
+        return SkillFile.open(tmpFile(name), Mode.Create, Mode.Write);
+    }
 
-	private static final SkillFile read(Path path) throws Exception {
-		return SkillFile.open(path, Mode.Read, Mode.ReadOnly);
-	}
+    private static final SkillFile read(Path path) throws Exception {
+        return SkillFile.open(path, Mode.Read, Mode.ReadOnly);
+    }
 
-	@Test
-	public void writeDelete() throws Exception {
-		final int count = 100;
+    @Test
+    public void writeDelete() throws Exception {
+        final int count = 100;
 
-		SkillFile sf = open("writeDelete");
-		for (int i = 0; i < count; i++)
-			sf.Ages().make(i);
+        SkillFile sf = open("writeDelete");
+        for (int i = 0; i < count; i++)
+            sf.Ages().make(i);
 
-		sf.flush();
+        sf.flush();
 
-		Assert.assertEquals("check size", count, read(sf.currentPath()).Ages().size());
+        Assert.assertEquals("check size", count, read(sf.currentPath()).Ages().size());
 
-		// delete all instances
-		for (Age a : sf.Ages())
-			sf.delete(a);
+        // delete all instances
+        for (Age a : sf.Ages())
+            sf.delete(a);
 
-		if (isWindows)
-			sf.changePath(tmpFile("wds"));
-		sf.close();
+        sf.close();
 
-		Assert.assertEquals("ensure that no instance remains", 0, read(sf.currentPath()).Ages().size());
-	}
+        Assert.assertEquals("ensure that no instance remains", 0, read(sf.currentPath()).Ages().size());
+    }
 
-	@Test
-	public void writeDeleteSome() throws Exception {
-		final int count = 100;
+    @Test
+    public void writeDeleteSome() throws Exception {
+        final int count = 100;
 
-		SkillFile sf = open("writeDeleteSome");
-		for (int i = 0; i < count; i++)
-			sf.Ages().make(i);
+        SkillFile sf = open("writeDeleteSome");
+        for (int i = 0; i < count; i++)
+            sf.Ages().make(i);
 
-		sf.flush();
+        sf.flush();
 
-		Assert.assertEquals("check size", count, read(sf.currentPath()).Ages().size());
+        Assert.assertEquals("check size", count, read(sf.currentPath()).Ages().size());
 
-		// delete all instances
-		for (Age a : sf.Ages())
-			if (a.getAge() < count / 10)
-				sf.delete(a);
+        // delete all instances
+        for (Age a : sf.Ages())
+            if (a.getAge() < count / 10)
+                sf.delete(a);
 
-		if (isWindows)
-			sf.changePath(tmpFile("wds"));
-		sf.close();
+        sf.close();
 
-		Assert.assertEquals("ensure that no instance remains", (int) (count * .9),
-				read(sf.currentPath()).Ages().size());
-	}
+        Assert.assertEquals("ensure that no instance remains", (int) (count * .9),
+                read(sf.currentPath()).Ages().size());
+    }
 }

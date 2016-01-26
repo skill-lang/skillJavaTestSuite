@@ -32,8 +32,6 @@ import de.ust.skill.common.java.internal.fieldTypes.SingleArgumentType;
  */
 @Ignore
 abstract public class CommonTest {
-	
-	public final boolean isWindows = de.ust.skill.common.jvm.streams.FileOutputStream.isWindows;
 
     /**
      * This constant is used to guide reflective init
