@@ -36,6 +36,21 @@ public class SimpleRead {
     }
 
     @Test
+    public void containsChecks() throws Exception {
+        SkillFile sf = SkillFile.open("test/age.sf", Mode.Read);
+        for(Age a : sf.Ages())
+        	Assert.assertTrue(sf.contains(a));
+    }
+    
+    @Test
+    public void containsChecks2() throws Exception {
+        SkillFile sf = SkillFile.open("test/age.sf", Mode.Read);
+        SkillFile sf2 = SkillFile.open("test/age.sf", Mode.Read);
+        for(Age a : sf.Ages())
+        	Assert.assertFalse(sf2.contains(a));
+    }
+
+    @Test
     public void read16() throws Exception {
         SkillFile sf = SkillFile.open("test/age16.sf", Mode.Read);
         Assert.assertEquals(3400000, sf.Ages().size());
