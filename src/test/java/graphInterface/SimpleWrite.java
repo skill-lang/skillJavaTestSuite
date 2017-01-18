@@ -1,5 +1,6 @@
 package graphInterface;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import common.CommonTest;
@@ -24,11 +25,14 @@ public class SimpleWrite extends CommonTest {
     }
 
     @Test
-    public void insertAB() throws Exception {
-        SkillFile sf = SkillFile.open(tmpFile("insertAB"), Mode.Create, Mode.Write);
+    public void writeColor() throws Exception {
+        SkillFile sf = SkillFile.open(tmpFile("writeColor"), Mode.Create, Mode.Write);
 
+        sf.Nodes().build().color("red").make();
 
         sf.close();
+
+        Assert.assertEquals("red", SkillFile.open(sf.currentPath()).Nodes().getByID(1).color);
     }
 
 }
