@@ -16,6 +16,7 @@ import org.junit.Ignore;
 import de.ust.skill.common.java.api.Access;
 import de.ust.skill.common.java.api.FieldDeclaration;
 import de.ust.skill.common.java.api.FieldType;
+import de.ust.skill.common.java.api.GeneralAccess;
 import de.ust.skill.common.java.api.SkillException;
 import de.ust.skill.common.java.api.SkillFile;
 import de.ust.skill.common.java.internal.SkillObject;
@@ -96,18 +97,20 @@ abstract public class CommonTest {
 
     private static <T, Obj extends SkillObject> void set(SkillFile sf, Obj o, FieldDeclaration<T> f) {
         T v = value(sf, f.type());
-        // System.out.printf("%s#%d.%s = %s\n", o.getClass().getName(), o.getSkillID(), f.name(), v.toString());
+        // System.out.printf("%s#%d.%s = %s\n", o.getClass().getName(),
+        // o.getSkillID(), f.name(), v.toString());
         o.set(f, v);
     }
 
     /**
-     * unchecked, because the insane amount of casts is necessary to reflect the implicit value based type system
+     * unchecked, because the insane amount of casts is necessary to reflect the
+     * implicit value based type system
      */
     @SuppressWarnings("unchecked")
     private static <T> T value(SkillFile sf, FieldType<T> type) {
-        if (type instanceof Access) {
+        if (type instanceof GeneralAccess<?>) {
             // get a random object
-            Iterator<T> is = (Iterator<T>) ((Access<?>) type).iterator();
+            Iterator<T> is = (Iterator<T>) ((GeneralAccess<?>) type).iterator();
             for (int i = ThreadLocalRandom.current().nextInt(reflectiveInitSize) % 200; i != 0; i--)
                 is.next();
             return is.next();
