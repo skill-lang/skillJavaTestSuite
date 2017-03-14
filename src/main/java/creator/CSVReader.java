@@ -1,4 +1,4 @@
-package age;
+package creator;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -24,16 +24,10 @@ public class CSVReader {
 		if(args.length == 0){
 			path = path.resolve("values.csv");
 		}
-
-		Map<String, Object> values = new HashMap<>();
-		Map<String, String> fieldTypes = new HashMap<>();
-
+		
 		for(String line : readCSV(path)){
 			try {
-				String[] tokens = line.split(";");
-				String className = getClassNameFromEntry(tokens);
-				createMappingFromLine(tokens, values, fieldTypes);
-				SkillObject obj = SkillObjectCreator.instantiateSkillObject(className, values, fieldTypes);
+				SkillObject obj = createSkillObjectFromLine(line.split(";"));
 				System.out.println(obj.prettyString());
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -53,6 +47,15 @@ public class CSVReader {
 		}
 		
 		System.out.println(path.toAbsolutePath().toString());
+	}
+	
+	public static SkillObject createSkillObjectFromLine(String[] tokens) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+		Map<String, Object> values = new HashMap<>();
+		Map<String, String> fieldTypes = new HashMap<>();
+		
+		String className = getClassNameFromEntry(tokens);
+		createMappingFromLine(tokens, values, fieldTypes);
+		return SkillObjectCreator.instantiateSkillObject(className, values, fieldTypes);
 	}
 	
 	public static void createMappingFromLine(String[] tokens,

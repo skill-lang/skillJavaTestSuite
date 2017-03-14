@@ -1,5 +1,6 @@
 # ignore all generated code
-src/main
+src/main/java/*
+!src/main/java/creator/
 
 # generic read tests
 **/Generic*Test.java
