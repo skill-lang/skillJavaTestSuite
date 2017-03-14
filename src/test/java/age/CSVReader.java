@@ -1,11 +1,16 @@
 package age;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import de.ust.skill.common.java.internal.SkillObject;
 
 public class CSVReader {
 	
@@ -15,7 +20,39 @@ public class CSVReader {
 	private static final int VALUE_SUBINDEX = 2;
 
 	public static void main(String[] args){
+		Path path = Paths.get(System.getProperty("user.dir"), "src", "test", "resources");
+		if(args.length == 0){
+			path = path.resolve("values.csv");
+		}
+
+		Map<String, Object> values = new HashMap<>();
+		Map<String, String> fieldTypes = new HashMap<>();
+
+		for(String line : readCSV(path)){
+			try {
+				String[] tokens = line.split(";");
+				String className = getClassNameFromEntry(tokens);
+				createMappingFromLine(tokens, values, fieldTypes);
+				SkillObject obj = SkillObjectCreator.instantiateSkillObject(className, values, fieldTypes);
+				System.out.println(obj.prettyString());
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				e.printStackTrace();
+			} catch (InstantiationException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		}
 		
+		System.out.println(path.toAbsolutePath().toString());
 	}
 	
 	public static void createMappingFromLine(String[] tokens,
