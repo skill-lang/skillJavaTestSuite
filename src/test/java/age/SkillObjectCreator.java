@@ -11,7 +11,7 @@ import java.util.Map;
 
 import de.ust.skill.common.java.internal.SkillObject;
 
-public class DummyTest {
+public class SkillObjectCreator {
 	
 	private static final String FIELD_DECLARATION_CLASS_NAME = "de.ust.skill.common.java.api.FieldDeclaration";
 
