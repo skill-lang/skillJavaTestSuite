@@ -20,23 +20,16 @@ public class DummyTest {
 		String fieldToSet = "age";
 		String fieldTypeToSet = "long";
 		Long valueToSet = 255L;
+		Map<String, Object> values = new HashMap<>();
+		Map<String, String> fieldTypes = new HashMap<>();
+		
+		values.put(fieldToSet, valueToSet);
+		fieldTypes.put(fieldToSet, fieldTypeToSet);
 		
 		try {				
-			Class<?> refClass = Class.forName(className);
-			Constructor<?> refConstructor = refClass.getConstructor();			
-		    SkillObject refVar = (SkillObject) refConstructor.newInstance();
-		    
-		    Map<String, Type> fieldMapping = getFieldMapping(refClass);
-			for(String key : fieldMapping.keySet()){
-				String type = fieldMapping.get(key).getTypeName();
-				System.out.println("Present field: " + key + "(Type: " + type + ")");
-				if(key.equals(fieldToSet)){
-					System.out.println("Setting field '" + key + "'");
-					reflectiveSetValue(refVar, valueToSet , fieldToSet, fieldTypeToSet);
-				}
-			}
+			SkillObject obj = instantiateSkillObject(className, values, fieldTypes);
 			
-			System.out.println(refVar.prettyString());
+			System.out.println(obj.prettyString());
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
 		} catch (SecurityException e) {
@@ -52,6 +45,30 @@ public class DummyTest {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static SkillObject createSkillObject(String className) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+		Class<?> refClass = Class.forName(className);
+		Constructor<?> refConstructor = refClass.getConstructor();			
+	    SkillObject refVar = (SkillObject) refConstructor.newInstance();
+		return refVar;	
+	}
+	
+	public static SkillObject instantiateSkillObject(String className, 
+			Map<String, Object> values, 
+			Map<String, String> fieldTypes) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+		SkillObject obj = createSkillObject(className);
+		Map<String, Type> fieldMapping = getFieldMapping(className);
+		
+		for(String key : fieldMapping.keySet()){
+			String type = fieldMapping.get(key).getTypeName();
+			System.out.println("Present field: " + key + "(Type: " + type + ")");
+			if(values.containsKey(key)){
+				System.out.println("Setting field '" + key + "'");
+				reflectiveSetValue(obj, values.get(key) , key, fieldTypes.get(key));
+			}
+		}
+		return obj;
 	}
 	
 	/**
