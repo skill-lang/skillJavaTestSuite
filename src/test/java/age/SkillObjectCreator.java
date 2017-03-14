@@ -144,6 +144,35 @@ public class SkillObjectCreator {
 			}
 		}
 	}
+	
+	/**
+	 * Parse a value encoded in a string to the specified type
+	 * @param type
+	 * @param valueString
+	 * @return instance of the actual class of the provided value
+	 */
+	public static Object valueOf(String type, String valueString){
+		switch(type){
+		case "byte":
+			return Byte.valueOf(valueString);
+		case "short":
+			return Short.valueOf(valueString);
+		case "int":
+			return Integer.valueOf(valueString);
+		case "long":
+			return Long.valueOf(valueString);
+		case "float":
+			return Float.valueOf(valueString);
+		case "double":
+			return Double.valueOf(valueString);
+		case "boolean":
+			return Boolean.valueOf(valueString);
+		case "char":
+			return Character.valueOf(valueString.charAt(0));
+		default:
+				return null;
+		}
+	}
 
 	/**
 	 * Checks whether a provided class name is a primitive type
