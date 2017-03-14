@@ -1,7 +1,6 @@
 package age;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -11,6 +10,9 @@ import java.util.Map;
 public class CSVReader {
 	
 	private static final int CLASS_INDEX = 0;
+	private static final int FIELD_NAME_SUBINDEX = 0;
+	private static final int TYPE_SUBINDEX = 1;
+	private static final int VALUE_SUBINDEX = 2;
 
 	public static void main(String[] args){
 		
@@ -21,9 +23,9 @@ public class CSVReader {
 			Map<String, String> fieldTypes){
 		for(int i = 1; i < tokens.length; i++){
 			String[] subtokens = tokens[i].split(":");
-			String fieldName = subtokens[0];
-			String value = subtokens[1];
-			String type = subtokens[2];
+			String fieldName = subtokens[FIELD_NAME_SUBINDEX];
+			String value = subtokens[VALUE_SUBINDEX];
+			String type = subtokens[TYPE_SUBINDEX];
 			values.put(fieldName, SkillObjectCreator.valueOf(type, value));
 			fieldTypes.put(fieldName, type);
 		}
