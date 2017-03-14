@@ -47,6 +47,11 @@ public class DummyTest {
 		}
 	}
 	
+	/**
+	 * Create an empty SkillObject from a fully specified class name
+	 * @param className fully classified class name incl. package identifier
+	 * @return empty SkillObject of the specified class
+	 */
 	public static SkillObject createSkillObject(String className) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		Class<?> refClass = Class.forName(className);
 		Constructor<?> refConstructor = refClass.getConstructor();			
@@ -54,6 +59,13 @@ public class DummyTest {
 		return refVar;	
 	}
 	
+	/**
+	 * Create and fill a SkillObject with the provided values
+	 * @param className fully specified class name incl. package identifier of the object to be created
+	 * @param values mapping of field names to values 
+	 * @param fieldTypes mapping of field names to the corresponding types of values
+	 * @return a SkillObject with the provided values as attributes
+	 */
 	public static SkillObject instantiateSkillObject(String className, 
 			Map<String, Object> values, 
 			Map<String, String> fieldTypes) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
@@ -72,12 +84,12 @@ public class DummyTest {
 	}
 	
 	/**
-	 * 
-	 * @param obj
-	 * @param value
-	 * @param fieldName
-	 * @param fieldType fully qualified class name of the field class
-	 * @return
+	 * Set the specified field of a SkillObject to a given value
+	 * @param obj the SkillObject for which the field is to be set
+	 * @param value the value to set the field of the SkillObject to
+	 * @param fieldName the name of the field to be set
+	 * @param fieldType fully qualified class name of the field to be set
+	 * @return the provided SkillObject with a set new value
 	 */
 	public static SkillObject reflectiveSetValue(SkillObject obj, Object value, String fieldName, String fieldType){
 		try {
@@ -100,6 +112,12 @@ public class DummyTest {
 		return null;
 	}
 	
+	/**
+	 * Get a Class object from a fully qualified class name incl. package identifier
+	 * @param type fully qualified class name
+	 * @return Class object for the provided class name
+	 * @throws ClassNotFoundException
+	 */
 	private static Class<?> getAptClass(String type) throws ClassNotFoundException {
 		if(!isPrimitive(type)){
 			return Class.forName(type);
@@ -127,6 +145,11 @@ public class DummyTest {
 		}
 	}
 
+	/**
+	 * Checks whether a provided class name is a primitive type
+	 * @param type the name of the class to be checked
+	 * @return true, if type is a primitive type. False, otherwise.
+	 */
 	private static boolean isPrimitive(String type) {
 		String[] primitiveTypes = {"byte", "short", "int", "long", "float", "double", "boolean", "char"};
 		return Arrays.asList(primitiveTypes).contains(type);
@@ -143,6 +166,11 @@ public class DummyTest {
 		return "setAge";
 	}
 	
+	/**
+	 * Create a mapping of field names and their corresponding types of the given class.
+	 * @param className the name of the class for which to generate the mapping
+	 * @return a mapping of field names to Type objects
+	 */
 	public static Map<String, Type> getFieldMapping(String className){
 		Map<String, Type> fieldTypeMapping;
 		try {
@@ -159,6 +187,11 @@ public class DummyTest {
 		return null;
 	}
 	
+	/**
+	 * Create a mapping of field names and their corresponding types of the given class.
+	 * @param cls the class for which to generate the mapping
+	 * @return a mapping of field names to Type objects
+	 */
 	public static Map<String, Type> getFieldMapping(Class<?> cls){
 		Map<String, Type> fieldTypeMapping;
 		Field[] declaredFields = cls.getDeclaredFields();
