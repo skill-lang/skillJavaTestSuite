@@ -1,10 +1,12 @@
 package age;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class CSVReader {
 	
@@ -14,8 +16,20 @@ public class CSVReader {
 		
 	}
 	
-	public static String getClassNameFromLine(String line){
-		String[] tokens = line.split(";");
+	public static void createMappingFromLine(String[] tokens,
+			Map<String, Object> values,
+			Map<String, String> fieldTypes){
+		for(int i = 1; i < tokens.length; i++){
+			String[] subtokens = tokens[i].split(":");
+			String fieldName = subtokens[0];
+			String value = subtokens[1];
+			String type = subtokens[2];
+			values.put(fieldName, SkillObjectCreator.valueOf(type, value));
+			fieldTypes.put(fieldName, type);
+		}
+	}
+
+	public static String getClassNameFromEntry(String[] tokens){
 		if(tokens.length > 0){
 			return tokens[CLASS_INDEX];
 		}else{
