@@ -192,7 +192,8 @@ public class SkillObjectCreator {
 	 * @return the name of the setter method
 	 */
 	public static String getSetterName(String fieldName){
-		return "setAge";
+		
+		return "set" + fieldName.substring(0,1).toUpperCase() + fieldName.substring(1);
 	}
 	
 	/**
