@@ -1,0 +1,60 @@
+[	
+	{
+		"ObjectName" : "Test1",
+		"ClassName" : "age.Age",
+		"age" : 
+		{
+			"ClassName" : "long",
+			"Value" : "42"
+		}
+	},
+	{
+		"ObjectName" : "Test2",
+		"ClassName" : "basicTypes.BasicIntegers",
+		"int8":
+		{	
+			"ClassName" : "basicTypes.BasicInt8",
+			"basicInt" : 
+			{
+				"ClassName" : "byte",
+				"Value" : "1"
+			}
+		},
+		"int16":
+		{	
+			"ClassName" : "basicTypes.BasicInt16",
+			"basicInt" : 
+			{
+				"ClassName" : "short",
+				"Value" : "2"
+			}
+		},
+		"int32":
+		{	
+			"ClassName" : "basicTypes.BasicInt32",
+			"basicInt" : 
+			{
+				"ClassName" : "int",
+				"Value" : "3"
+			}
+		},
+		"int64I":
+		{	
+			"ClassName" : "basicTypes.BasicInt64I",
+			"basicInt" : 
+			{
+				"ClassName" : "long",
+				"Value" : "4"
+			}
+		},
+		"int64V":
+		{	
+			"ClassName" : "basicTypes.BasicInt64V",
+			"basicInt" : 
+			{
+				"ClassName" : "long",
+				"Value" : "5"
+			}
+		},	
+	}
+]
