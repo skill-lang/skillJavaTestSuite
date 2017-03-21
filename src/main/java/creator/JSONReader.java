@@ -9,17 +9,15 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.json.*;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import de.ust.skill.common.java.internal.SkillObject;
-import de.ust.skill.common.jvm.streams.FileInputStream;
 
 public class JSONReader {
 
-	private static final int CLASS_INDEX = 0;
-	private static final int FIELD_NAME_SUBINDEX = 0;
-	private static final int TYPE_SUBINDEX = 1;
-	private static final int VALUE_SUBINDEX = 2;
 	private static final String STANDARD_CLASS_KEY = "ClassName";
 	private static final String STANDARD_OBJECTNAME = "ObjectName";
 	private static final String STANDARD_PRIMITIVE_VALUE_KEY = "Value";
@@ -60,6 +58,22 @@ public class JSONReader {
 		}
 	}
 
+	/**
+	 * Create a SKilL object from the provided JSON object.
+	 * 
+	 * @param jsonObject
+	 *            a JSON object containing data to be used as attribute values
+	 *            for the SKilL object
+	 * @return A SKilL representation of the data contained by the provided JSON
+	 *         object
+	 * @throws ClassNotFoundException
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
 	public static SkillObject createSkillObjectFromJSON(JSONObject jsonObject)
 			throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException,
 			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -72,12 +86,31 @@ public class JSONReader {
 		return SkillObjectCreator.instantiateSkillObject(className, values, fieldTypes);
 	}
 
+	/**
+	 * Create mappings of field names to values and field types for a given
+	 * JSONObject object.
+	 * 
+	 * @param jsonObect
+	 *            JSON object to create the mapping from
+	 * @param values
+	 *            an empty Map for field name to value mappings to be filled by
+	 *            this method
+	 * @param fieldTypes
+	 *            an empty Map for field name to type mappings to be filled by
+	 *            this method
+	 * @throws ClassNotFoundException
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
 	public static void createMappingFromJSONObject(JSONObject jsonObect, Map<String, Object> values,
 			Map<String, String> fieldTypes) throws ClassNotFoundException, NoSuchMethodException, SecurityException,
 			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		for (String attributeKey : jsonObect.keySet()) {
-			if (attributeKey.equals(STANDARD_OBJECTNAME) 
-					|| attributeKey.equalsIgnoreCase(STANDARD_CLASS_KEY)) {
+			if (attributeKey.equals(STANDARD_OBJECTNAME) || attributeKey.equalsIgnoreCase(STANDARD_CLASS_KEY)) {
 				continue;
 			}
 			String fieldName = attributeKey;
@@ -90,6 +123,22 @@ public class JSONReader {
 		}
 	}
 
+	/**
+	 * Get the attribute value of an JSON attribute. This method handles
+	 * differences between primitive types and complex objects.
+	 * 
+	 * @param attributeValue
+	 *            attribute of a JSON object
+	 * @param type
+	 *            fully qualified class name of the attribute provided as
+	 *            'attributeValue'
+	 * @return the value of the provided attribute
+	 * @throws ClassNotFoundException
+	 * @throws NoSuchMethodException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 */
 	private static Object getJsonAttributeValue(JSONObject attributeValue, String type) throws ClassNotFoundException,
 			NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
 		if (SkillObjectCreator.isPrimitive(type)) {
@@ -101,6 +150,16 @@ public class JSONReader {
 		}
 	}
 
+	/**
+	 * Read list of JSONs from text file and parse it to a JSONArray object
+	 * 
+	 * @param file
+	 *            the file to read from
+	 * @return JSONArray
+	 * @throws JSONException
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 */
 	public static JSONArray readJSON(File file) throws JSONException, MalformedURLException, IOException {
 		JSONTokener fileTokens = new JSONTokener(new java.io.FileInputStream(file));
 		JSONArray content = new JSONArray(fileTokens);
