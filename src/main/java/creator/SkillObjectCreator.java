@@ -179,7 +179,7 @@ public class SkillObjectCreator {
 	 * @param type the name of the class to be checked
 	 * @return true, if type is a primitive type. False, otherwise.
 	 */
-	private static boolean isPrimitive(String type) {
+	public static boolean isPrimitive(String type) {
 		String[] primitiveTypes = {"byte", "short", "int", "long", "float", "double", "boolean", "char"};
 		return Arrays.asList(primitiveTypes).contains(type);
 	}
