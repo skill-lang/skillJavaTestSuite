@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -26,6 +27,7 @@ public class JSONReader {
 	private static final String STANDARD_OBJECTNAME = "ObjectName";
 	private static final String STANDARD_VALUE_KEY = "Value";
 	private static final String STANDARD_VALUE_TYPE_KEY = "ValueType";
+	private static final String STANDARD_KEY_TYPE_KEY = "KeyType";
 
 	public static void main(String[] args) {
 		Path path = Paths.get(System.getProperty("user.dir"), "src", "test", "resources");
@@ -148,23 +150,55 @@ public class JSONReader {
 	private static Object getJsonAttributeValue(JSONObject attributeValue, String type) throws ClassNotFoundException,
 			NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
 		if (SKilLType.isPrimitive(type)) {
-			return SkillObjectCreator.valueOf(type,
-					attributeValue.getString(STANDARD_VALUE_KEY));
+			
+			return SkillObjectCreator.valueOf(type, attributeValue.getString(STANDARD_VALUE_KEY));
+			
 		} else if (SKilLType.isCollection(type)) {
+			
 			JSONArray attributeArray = attributeValue.getJSONArray(STANDARD_VALUE_KEY);
 			String valueType = attributeValue.getString(STANDARD_VALUE_TYPE_KEY);
-			return parseJsonCollection(attributeArray, type, valueType);
+			String parsedValueType = parseAttributeType(valueType);
+			return parseJsonCollection(attributeArray, type, parsedValueType);
+			
+		} else if (SKilLType.isMap(type)) {
+			List<JSONObject> keyList = getKeys(attributeValue);
+			String valueType = attributeValue.getString(STANDARD_VALUE_TYPE_KEY);
+			String parsedValueType = parseAttributeType(valueType);
+			JSONArray keyTypes = attributeValue.getJSONArray(STANDARD_KEY_TYPE_KEY);
+			return parseJsonMap(keyList, keyTypes, parsedValueType);
+			
 		} else {
-
+			
 			return createSkillObjectFromJSON(attributeValue);
 		}
 	}
 
-	private static Collection<?> parseJsonCollection(JSONArray attributeArray, String collectionType,
-			String valueType) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, JSONException {
+	private static Object parseJsonMap(List<JSONObject> keyList, JSONArray keyTypes, String parsedValueType) {
+		new HashMap<>();
+		
+		return null;
+	}
+
+	private static ArrayList<JSONObject> getKeys(JSONObject attributeValues) {
+		ArrayList<JSONObject> keys = new ArrayList<>();
+		for(String attributeKey : attributeValues.keySet()){
+			if(attributeKey.equals(STANDARD_CLASS_KEY) 
+					|| attributeKey.equals(STANDARD_VALUE_TYPE_KEY)
+					|| attributeKey.equals(STANDARD_KEY_TYPE_KEY)){
+				continue;
+			}
+			keys.add(attributeValues.getJSONObject(attributeKey));
+		}
+		
+		return keys;
+	}
+
+	private static Collection<?> parseJsonCollection(JSONArray attributeArray, String collectionType, String valueType)
+			throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException,
+			IllegalAccessException, IllegalArgumentException, InvocationTargetException, JSONException {
 		Collection collection;
 
-		switch (SKilLType.getJavaType(collectionType)) {
+		switch (collectionType) {
 		case "java.util.ArrayList":
 			collection = new ArrayList<>();
 			break;
@@ -182,7 +216,7 @@ public class JSONReader {
 				collection.add(SkillObjectCreator.valueOf(valueType, attributeArray.getString(i)));
 			}
 		} else {
-			for(int i = 0; i < attributeArray.length(); i++){
+			for (int i = 0; i < attributeArray.length(); i++) {
 				collection.add(createSkillObjectFromJSON(attributeArray.getJSONObject(i)));
 			}
 		}
@@ -207,9 +241,17 @@ public class JSONReader {
 
 	}
 	
-	
-	private static String parseAttributeType(String type){
+	private static List<String> parseMapKeyTypes(JSONArray keyTypes){
+		List<String> parsedMapKeys = new ArrayList<>();
+		for(int i = 0; i < keyTypes.length(); i++){
+			String parsedKey = parseAttributeType(keyTypes.getString(i));
+			parsedMapKeys.add(parsedKey);
+		}
+		return parsedMapKeys;
+	}
+
+	private static String parseAttributeType(String type) {
 		String parsedType = SKilLType.getJavaType(type);
-		return (parsedType == null ) ? type : parsedType; 
+		return (parsedType == null) ? type : parsedType;
 	}
 }
