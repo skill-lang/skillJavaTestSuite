@@ -43,7 +43,7 @@ public enum SKilLType {
 	}
 	
 	public static boolean isCollection(String skillType){
-		String[] collectionTypes = {"java.util.ArrayList","java.util.LinkedList","java.util.HashSet","java.util.HashMap"};
+		String[] collectionTypes = {"java.util.ArrayList","java.util.LinkedList","java.util.HashSet"};
 		String mappedValue = typeMapping.get(skillType);
 		if(mappedValue == null){
 			return false;
