@@ -69,7 +69,7 @@
 		"f" : 
 		{
 			"ClassName" : "skill.lang.map",
-			"KeyType" : [ "skill.lang.String", "long"],
+			"KeyType" : [ "skill.lang.string", "skill.lang.v64"],
 			"ValueType" : "skill.lang.v64",
 			"key1": { "1" : "11", "2": "12", "3": "13" },
 			"key2": { "1" : "21", "2": "22", "3": "23" },
@@ -78,7 +78,7 @@
 		"l" : 
 		{	
 			"ClassName" : "skill.lang.list",
-				"ValueType" : "skill.lang.v64",
+			"ValueType" : "skill.lang.v64",
 			"Value" : [ "4", "5", "6" ]
 		},
 		"s" : 
