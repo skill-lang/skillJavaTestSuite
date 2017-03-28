@@ -33,14 +33,9 @@ public enum SKilLType {
 		this.skillType = skillType;
 	}
 
-	public static boolean isCollection(String skillType) {
+	public static boolean isCollection(String type) {
 		String[] collectionTypes = { "java.util.ArrayList", "java.util.LinkedList", "java.util.HashSet" };
-		String mappedValue = typeMapping.get(skillType);
-		if (mappedValue == null) {
-			return false;
-		} else {
-			return Arrays.asList(collectionTypes).contains(mappedValue);
-		}
+			return Arrays.asList(collectionTypes).contains(type);
 	}
 
 	/**
@@ -55,6 +50,10 @@ public enum SKilLType {
 		return Arrays.asList(primitiveTypes).contains(type);
 	}
 
+	public static boolean isMap(String type){
+		return type.equalsIgnoreCase("java.util.HashMap");
+	}
+	
 	public static String getJavaType(String skillType) {
 		return typeMapping.get(skillType);
 	}
