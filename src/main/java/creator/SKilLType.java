@@ -2,24 +2,23 @@ package creator;
 
 import java.util.HashMap;
 
-public enum SKilLTypes {
-	Bool("skill.lang.bool", "boolean"),
-	Integer8("skill.lang.i8","byte"),
-	Integer16("skill.lang.i16","short"),
-	Integer32("skill.lang.i32","int"),
-	Integer64("skill.lang.i64","long"),
-	VariableInt64("skill.lang.v64","java.math.BigInteger"),
-	Float32("skill.lang.f32","float"),
-	Float64("skill.lang.f64","double"),
-	Array("skill.lang.array","array"),
-	List("skill.lang.list","java.util.ArrayList"),
-	Set("skill.lang.set","java.util.HashSet"),
-	Map("skill.lang.map","java.util.HashMap"),
-	String("skill.lang.string","java.lang.String"),
-	Annotation("skill.lang.annotation","annotation");
+public enum SKilLType {
+	Bool("skill.lang.bool"),
+	Integer8("skill.lang.i8"),
+	Integer16("skill.lang.i16"),
+	Integer32("skill.lang.i32"),
+	Integer64("skill.lang.i64"),
+	VariableInt64("skill.lang.v64"),
+	Float32("skill.lang.f32"),
+	Float64("skill.lang.f64"),
+	Array("skill.lang.array"),
+	List("skill.lang.list"),
+	Set("skill.lang.set"),
+	Map("skill.lang.map"),
+	String("skill.lang.string"),
+	Annotation("skill.lang.annotation");
 
 	private String skillType;
-	private String javaType;
 	private static HashMap<String, String> typeMapping;
 	static {
 		typeMapping.put("skill.lang.bool", "boolean");
@@ -30,21 +29,29 @@ public enum SKilLTypes {
 		typeMapping.put("skill.lang.v64", "java.math.BigInteger");
 		typeMapping.put("skill.lang.f32", "float");
 		typeMapping.put("skill.lang.f64", "double");
-		typeMapping.put("skill.lang.array", "array");
-		typeMapping.put("skill.lang.list", "java.util.ArrayList");
+		typeMapping.put("skill.lang.array", "java.util.ArrayList");
+		typeMapping.put("skill.lang.list", "java.util.LinkedList");
 		typeMapping.put("skill.lang.set", "java.util.HashSet");
 		typeMapping.put("skill.lang.map", "java.util.HashMap");
 		typeMapping.put("skill.lang.string", "java.lang.String");
-		typeMapping.put("skill.lang.annotation", "annotation");
+		typeMapping.put("skill.lang.annotation", "java.lang.Object");
 	}
 
-	SKilLTypes(String skillType, String javaType) {
+	SKilLType(String skillType) {
 		this.skillType = skillType;
-		this.javaType = javaType;
 	}
 	
 	public static String getJavaType(String skillType){
 		return typeMapping.get(skillType);
+	}
+	
+	public static SKilLType fromString(String type){
+		for(SKilLType currentType : SKilLType.values()){
+			if(currentType.skillType.equals(type)){
+				return currentType;
+			}
+		}
+		return null;
 	}
 	
 }
