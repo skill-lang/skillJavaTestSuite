@@ -121,10 +121,11 @@ public class JSONReader {
 			String fieldName = attributeKey;
 			JSONObject attributeValue = jsonObect.getJSONObject(attributeKey);
 			String type = attributeValue.getString(STANDARD_CLASS_KEY);
-			Object value = getJsonAttributeValue(attributeValue, type);
+			String parsedType = parseAttributeType(type);
+			Object value = getJsonAttributeValue(attributeValue, parsedType);
 
 			values.put(fieldName, value);
-			fieldTypes.put(fieldName, type);
+			fieldTypes.put(fieldName, parsedType);
 		}
 	}
 
@@ -147,7 +148,7 @@ public class JSONReader {
 	private static Object getJsonAttributeValue(JSONObject attributeValue, String type) throws ClassNotFoundException,
 			NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
 		if (SKilLType.isPrimitive(type)) {
-			return SkillObjectCreator.valueOf(attributeValue.getString(STANDARD_CLASS_KEY),
+			return SkillObjectCreator.valueOf(type,
 					attributeValue.getString(STANDARD_VALUE_KEY));
 		} else if (SKilLType.isCollection(type)) {
 			JSONArray attributeArray = attributeValue.getJSONArray(STANDARD_VALUE_KEY);
@@ -204,5 +205,11 @@ public class JSONReader {
 		JSONArray content = new JSONArray(fileTokens);
 		return content;
 
+	}
+	
+	
+	private static String parseAttributeType(String type){
+		String parsedType = SKilLType.getJavaType(type);
+		return (parsedType == null ) ? type : parsedType; 
 	}
 }
