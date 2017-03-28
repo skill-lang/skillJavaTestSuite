@@ -4,7 +4,7 @@
 		"ClassName" : "age.Age",
 		"age" : 
 		{
-			"ClassName" : "long",
+			"ClassName" : "skill.lang.v64",
 			"Value" : "42"
 		}
 	},
@@ -16,7 +16,7 @@
 			"ClassName" : "basicTypes.BasicInt8",
 			"basicInt" : 
 			{
-				"ClassName" : "byte",
+				"ClassName" : "skill.lang.i8",
 				"Value" : "1"
 			}
 		},
@@ -25,7 +25,7 @@
 			"ClassName" : "basicTypes.BasicInt16",
 			"basicInt" : 
 			{
-				"ClassName" : "short",
+				"ClassName" : "skill.lang.i16",
 				"Value" : "2"
 			}
 		},
@@ -34,7 +34,7 @@
 			"ClassName" : "basicTypes.BasicInt32",
 			"basicInt" : 
 			{
-				"ClassName" : "int",
+				"ClassName" : "skill.lang.i32",
 				"Value" : "3"
 			}
 		},
@@ -43,7 +43,7 @@
 			"ClassName" : "basicTypes.BasicInt64I",
 			"basicInt" : 
 			{
-				"ClassName" : "long",
+				"ClassName" : "skill.lang.i64",
 				"Value" : "4"
 			}
 		},
@@ -52,7 +52,7 @@
 			"ClassName" : "basicTypes.BasicInt64V",
 			"basicInt" : 
 			{
-				"ClassName" : "long",
+				"ClassName" : "skill.lang.v64",
 				"Value" : "5"
 			}
 		},
@@ -61,41 +61,41 @@
 			"ClassName" : "container.Container",
 			"arr" : 
 			{
-				"ClassName" : "skill.lang.Array",
-				"ValueType" : "long",
+				"ClassName" : "skill.lang.array",
+				"ValueType" : "skill.lang.v64",
 				"Value" : [ "1", "2", "3" ]
 			},
 			"f" : 
 			{
-				"ClassName" : "skill.lang.Map",
+				"ClassName" : "skill.lang.map",
 				"KeyType" : [ "skill.lang.String", "long"],
-				"ValueType" : "long",
+				"ValueType" : "skill.lang.v64",
 				"key1": { "1" : "11", "2": "12", "3": "13" },
 				"key2": { "1" : "21", "2": "22", "3": "23" },
 				"key3": { "1" : "31", "2": "32", "3": "33" }
 			},
 			"l" : 
 			{	
-				"ClassName" : "skill.lang.List",
-				"ValueType" : "long",
+				"ClassName" : "skill.lang.list",
+				"ValueType" : "skill.lang.v64",
 				"Value" : [ "4", "5", "6" ]
 			},
 			"s" : 
 			{
-				"ClassName" : "skill.lang.Set",
-				"ValueType" : "long",
+				"ClassName" : "skill.lang.set",
+				"ValueType" : "skill.lang.v64",
 				"Value" : [ "7", "8", "9" ]
 			},
 			"someSet" :
 			{	
-				"ClassName" : "skill.lang.Set",
+				"ClassName" : "skill.lang.set",
 				"ValueType" : "container.SomethingElse",
 				"Value" : [ {"ClassName" : "container.SomethingElse" }, {"ClassName" : "container.SomethingElse"}]
 			},
 			"varr" :
 			{
-				"ClassName" : "skill.lang.VArray",
-				"ValueType" : "long",
+				"ClassName" : "skill.lang.array",
+				"ValueType" : "skill.lang.v64",
 				"Value" : [ "10", "11", "12" ]
 			}
 		}	
