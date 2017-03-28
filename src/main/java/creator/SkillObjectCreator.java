@@ -193,14 +193,26 @@ public class SkillObjectCreator {
 	}
 
 	/**
+	 * Checks whether a provided class name is a built in type
+	 * 
+	 * @param type
+	 *            the name of the class to be checked
+	 * @return true, if type is a built in type. False, otherwise.
+	 */
+	public static boolean isBuiltInType(String type) {
+		return SKilLType.fromString(type) != null;
+	}
+
+	/**
 	 * Checks whether a provided class name is a primitive type
 	 * 
 	 * @param type
 	 *            the name of the class to be checked
 	 * @return true, if type is a primitive type. False, otherwise.
 	 */
-	public static boolean isBuiltInType(String type) {
-		return SKilLType.fromString(type) != null;
+	public static boolean isPrimitive(String type) {
+		String[] primitiveTypes = { "byte", "short", "int", "long", "float", "double", "boolean", "char" };
+		return Arrays.asList(primitiveTypes).contains(type);
 	}
 
 	/**
