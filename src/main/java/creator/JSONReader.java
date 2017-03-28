@@ -6,7 +6,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -20,7 +24,8 @@ public class JSONReader {
 
 	private static final String STANDARD_CLASS_KEY = "ClassName";
 	private static final String STANDARD_OBJECTNAME = "ObjectName";
-	private static final String STANDARD_PRIMITIVE_VALUE_KEY = "Value";
+	private static final String STANDARD_VALUE_KEY = "Value";
+	private static final String STANDARD_VALUE_TYPE_KEY = "ValueType";
 
 	public static void main(String[] args) {
 		Path path = Paths.get(System.getProperty("user.dir"), "src", "test", "resources");
@@ -141,13 +146,47 @@ public class JSONReader {
 	 */
 	private static Object getJsonAttributeValue(JSONObject attributeValue, String type) throws ClassNotFoundException,
 			NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-		if (SkillObjectCreator.isPrimitive(type)) {
+		if (SKilLType.isPrimitive(type)) {
 			return SkillObjectCreator.valueOf(attributeValue.getString(STANDARD_CLASS_KEY),
-					attributeValue.getString(STANDARD_PRIMITIVE_VALUE_KEY));
+					attributeValue.getString(STANDARD_VALUE_KEY));
+		} else if (SKilLType.isCollection(type)) {
+			JSONArray attributeArray = attributeValue.getJSONArray(STANDARD_VALUE_KEY);
+			String valueType = attributeValue.getString(STANDARD_VALUE_TYPE_KEY);
+			return parseJsonCollection(attributeArray, type, valueType);
 		} else {
 
 			return createSkillObjectFromJSON(attributeValue);
 		}
+	}
+
+	private static Collection<?> parseJsonCollection(JSONArray attributeArray, String collectionType,
+			String valueType) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, JSONException {
+		Collection collection;
+
+		switch (SKilLType.getJavaType(collectionType)) {
+		case "java.util.ArrayList":
+			collection = new ArrayList<>();
+			break;
+		case "java.util.LinkedList":
+			collection = new LinkedList<>();
+			break;
+		case "java.util.HashSet":
+			collection = new HashSet<>();
+			break;
+		default:
+			throw new IllegalArgumentException("Unsupported collection type");
+		}
+		if (SKilLType.isPrimitive(valueType)) {
+			for (int i = 0; i < attributeArray.length(); i++) {
+				collection.add(SkillObjectCreator.valueOf(valueType, attributeArray.getString(i)));
+			}
+		} else {
+			for(int i = 0; i < attributeArray.length(); i++){
+				collection.add(createSkillObjectFromJSON(attributeArray.getJSONObject(i)));
+			}
+		}
+
+		return collection;
 	}
 
 	/**
