@@ -84,7 +84,7 @@ public class SkillObjectCreator {
 			String type = fieldMapping.get(key).getTypeName();
 			System.out.println("Present field: " + key + "(Type: " + type + ")");
 			if (values.containsKey(key)) {
-				System.out.println("Setting field '" + key + "'");
+				System.out.println("Setting field '" + key + "' to be " + values.get(key));
 				reflectiveSetValue(obj, values.get(key), key, fieldTypes.get(key));
 			}
 		}
