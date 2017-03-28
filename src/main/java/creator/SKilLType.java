@@ -41,6 +41,18 @@ public enum SKilLType {
 		this.skillType = skillType;
 	}
 	
+	public static boolean isCollection(String skillType){
+		String mappedValue = typeMapping.get(skillType);
+		if(mappedValue == null){
+			return false;
+		}else{
+			return mappedValue.equals("java.util.ArrayList")
+					|| mappedValue.equals("java.util.LinkedList")
+					|| mappedValue.equals("java.util.HashSet")
+					|| mappedValue.equals("java.util.HashMap");
+		}
+	}
+	
 	public static String getJavaType(String skillType){
 		return typeMapping.get(skillType);
 	}
