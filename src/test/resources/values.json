@@ -55,7 +55,8 @@
 				"ClassName" : "skill.lang.v64",
 				"Value" : "5"
 			}
-	},
+		}
+	},	
 	{
 		"ObjectName" : "Test3",
 		"ClassName" : "container.Container",
@@ -77,7 +78,7 @@
 		"l" : 
 		{	
 			"ClassName" : "skill.lang.list",
-			"ValueType" : "skill.lang.v64",
+				"ValueType" : "skill.lang.v64",
 			"Value" : [ "4", "5", "6" ]
 		},
 		"s" : 
@@ -98,6 +99,5 @@
 			"ValueType" : "skill.lang.v64",
 			"Value" : [ "10", "11", "12" ]
 		}
-	}	
-
+	}
 ]
