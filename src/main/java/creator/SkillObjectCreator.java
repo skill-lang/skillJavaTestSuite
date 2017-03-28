@@ -5,7 +5,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -136,7 +135,7 @@ public class SkillObjectCreator {
 	 * @throws ClassNotFoundException
 	 */
 	private static Class<?> getAptClass(String type) throws ClassNotFoundException {
-		if (!isBuiltInType(type)) {
+		if (!SKilLType.isPrimitive(type)) {
 			return Class.forName(type);
 		} else {
 			switch (type) {
@@ -192,29 +191,8 @@ public class SkillObjectCreator {
 		}
 	}
 
-	/**
-	 * Checks whether a provided class name is a built in type
-	 * 
-	 * @param type
-	 *            the name of the class to be checked
-	 * @return true, if type is a built in type. False, otherwise.
-	 */
-	public static boolean isBuiltInType(String type) {
-		return SKilLType.fromString(type) != null;
-	}
 
-	/**
-	 * Checks whether a provided class name is a primitive type
-	 * 
-	 * @param type
-	 *            the name of the class to be checked
-	 * @return true, if type is a primitive type. False, otherwise.
-	 */
-	public static boolean isPrimitive(String type) {
-		String[] primitiveTypes = { "byte", "short", "int", "long", "float", "double", "boolean", "char" };
-		return Arrays.asList(primitiveTypes).contains(type);
-	}
-
+	
 	/**
 	 * Return the method name of the setter method responsible for the field
 	 * with the name 'fieldName'.
