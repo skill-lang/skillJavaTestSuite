@@ -55,49 +55,49 @@
 				"ClassName" : "skill.lang.v64",
 				"Value" : "5"
 			}
-		},
+	},
+	{
+		"ObjectName" : "Test3",
+		"ClassName" : "container.Container",
+		"arr" : 
 		{
-			"ObjectName" : "Test3",
-			"ClassName" : "container.Container",
-			"arr" : 
-			{
-				"ClassName" : "skill.lang.array",
-				"ValueType" : "skill.lang.v64",
-				"Value" : [ "1", "2", "3" ]
-			},
-			"f" : 
-			{
-				"ClassName" : "skill.lang.map",
-				"KeyType" : [ "skill.lang.String", "long"],
-				"ValueType" : "skill.lang.v64",
-				"key1": { "1" : "11", "2": "12", "3": "13" },
-				"key2": { "1" : "21", "2": "22", "3": "23" },
-				"key3": { "1" : "31", "2": "32", "3": "33" }
-			},
-			"l" : 
-			{	
-				"ClassName" : "skill.lang.list",
-				"ValueType" : "skill.lang.v64",
-				"Value" : [ "4", "5", "6" ]
-			},
-			"s" : 
-			{
-				"ClassName" : "skill.lang.set",
-				"ValueType" : "skill.lang.v64",
-				"Value" : [ "7", "8", "9" ]
-			},
-			"someSet" :
-			{	
-				"ClassName" : "skill.lang.set",
-				"ValueType" : "container.SomethingElse",
-				"Value" : [ {"ClassName" : "container.SomethingElse" }, {"ClassName" : "container.SomethingElse"}]
-			},
-			"varr" :
-			{
-				"ClassName" : "skill.lang.array",
-				"ValueType" : "skill.lang.v64",
-				"Value" : [ "10", "11", "12" ]
-			}
-		}	
-	}
+			"ClassName" : "skill.lang.array",
+			"ValueType" : "skill.lang.v64",
+			"Value" : [ "1", "2", "3" ]
+		},
+		"f" : 
+		{
+			"ClassName" : "skill.lang.map",
+			"KeyType" : [ "skill.lang.String", "long"],
+			"ValueType" : "skill.lang.v64",
+			"key1": { "1" : "11", "2": "12", "3": "13" },
+			"key2": { "1" : "21", "2": "22", "3": "23" },
+			"key3": { "1" : "31", "2": "32", "3": "33" }
+		},
+		"l" : 
+		{	
+			"ClassName" : "skill.lang.list",
+			"ValueType" : "skill.lang.v64",
+			"Value" : [ "4", "5", "6" ]
+		},
+		"s" : 
+		{
+			"ClassName" : "skill.lang.set",
+			"ValueType" : "skill.lang.v64",
+			"Value" : [ "7", "8", "9" ]
+		},
+		"someSet" :
+		{	
+			"ClassName" : "skill.lang.set",
+			"ValueType" : "container.SomethingElse",
+			"Value" : [ {"ClassName" : "container.SomethingElse" }, {"ClassName" : "container.SomethingElse"}]
+		},
+		"varr" :
+		{
+			"ClassName" : "skill.lang.array",
+			"ValueType" : "skill.lang.v64",
+			"Value" : [ "10", "11", "12" ]
+		}
+	}	
+
 ]
