@@ -1,5 +1,6 @@
 package creator;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 public enum SKilLType {
@@ -42,16 +43,32 @@ public enum SKilLType {
 	}
 	
 	public static boolean isCollection(String skillType){
+		String[] collectionTypes = {"java.util.ArrayList","java.util.LinkedList","java.util.HashSet","java.util.HashMap"};
 		String mappedValue = typeMapping.get(skillType);
 		if(mappedValue == null){
 			return false;
 		}else{
-			return mappedValue.equals("java.util.ArrayList")
-					|| mappedValue.equals("java.util.LinkedList")
-					|| mappedValue.equals("java.util.HashSet")
-					|| mappedValue.equals("java.util.HashMap");
+			return Arrays.asList(collectionTypes).contains(mappedValue);
 		}
 	}
+	
+	/**
+	 * Checks whether a provided class name is a primitive type
+	 * 
+	 * @param type
+	 *            the name of the class to be checked
+	 * @return true, if type is a primitive type. False, otherwise.
+	 */
+	public static boolean isPrimitive(String skillType) {
+		String[] primitiveTypes = { "byte", "short", "int", "long", "float", "double", "boolean", "char" };
+		String mappedValue = typeMapping.get(skillType);
+		if (mappedValue == null) {
+			return false;
+		} else {
+			return Arrays.asList(primitiveTypes).contains(mappedValue);
+		}
+	}
+
 	
 	public static String getJavaType(String skillType){
 		return typeMapping.get(skillType);
