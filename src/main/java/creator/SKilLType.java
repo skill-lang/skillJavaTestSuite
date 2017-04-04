@@ -46,7 +46,7 @@ public enum SKilLType {
 	 * @return true, if type is a primitive type. False, otherwise.
 	 */
 	public static boolean isPrimitive(String type) {
-		String[] primitiveTypes = { "byte", "short", "int", "long", "float", "double", "boolean", "char" };
+		String[] primitiveTypes = { "byte", "short", "int", "long", "float", "double", "boolean", "char", "java.lang.String" };
 		return Arrays.asList(primitiveTypes).contains(type);
 	}
 

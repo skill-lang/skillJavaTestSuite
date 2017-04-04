@@ -186,6 +186,8 @@ public class SkillObjectCreator {
 			return Boolean.valueOf(valueString);
 		case "char":
 			return Character.valueOf(valueString.charAt(0));
+		case "java.lang.String":
+			return valueString;
 		default:
 			return null;
 		}
