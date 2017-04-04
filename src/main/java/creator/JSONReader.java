@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,10 +25,12 @@ import de.ust.skill.common.java.internal.SkillObject;
 public class JSONReader {
 
 	private static final String STANDARD_CLASS_KEY = "ClassName";
-	private static final String STANDARD_OBJECTNAME = "ObjectName";
+	private static final String STANDARD_OBJECTNAME_KEY = "ObjectName";
+	private static final String STANDARD_KEY_KEY = "Key";
 	private static final String STANDARD_VALUE_KEY = "Value";
 	private static final String STANDARD_VALUE_TYPE_KEY = "ValueType";
 	private static final String STANDARD_KEY_TYPE_KEY = "KeyType";
+	private static final String STANDARD_ENTRY_LIST_KEY = "Entries";
 
 	public static void main(String[] args) {
 		Path path = Paths.get(System.getProperty("user.dir"), "src", "test", "resources");
@@ -38,7 +41,7 @@ public class JSONReader {
 			JSONArray currentJSON = readJSON(path.toFile());
 			for (int i = 0; i < currentJSON.length(); i++) {
 				JSONObject currentTest = currentJSON.getJSONObject(i);
-				System.out.println(currentTest.get(STANDARD_OBJECTNAME));
+				System.out.println(currentTest.get(STANDARD_OBJECTNAME_KEY));
 				SkillObject obj = createSkillObjectFromJSON(currentTest);
 				System.out.println(obj.prettyString());
 			}
@@ -117,7 +120,7 @@ public class JSONReader {
 			Map<String, String> fieldTypes) throws ClassNotFoundException, NoSuchMethodException, SecurityException,
 			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		for (String attributeKey : jsonObect.keySet()) {
-			if (attributeKey.equals(STANDARD_OBJECTNAME) || attributeKey.equalsIgnoreCase(STANDARD_CLASS_KEY)) {
+			if (attributeKey.equals(STANDARD_OBJECTNAME_KEY) || attributeKey.equalsIgnoreCase(STANDARD_CLASS_KEY)) {
 				continue;
 			}
 			String fieldName = attributeKey;
@@ -133,7 +136,8 @@ public class JSONReader {
 
 	/**
 	 * Get the attribute value of an JSON attribute. This method handles
-	 * differences between primitive types and complex objects.
+	 * differences between primitive types, collections, maps and complex
+	 * objects.
 	 * 
 	 * @param attributeValue
 	 *            attribute of a JSON object
@@ -150,49 +154,105 @@ public class JSONReader {
 	private static Object getJsonAttributeValue(JSONObject attributeValue, String type) throws ClassNotFoundException,
 			NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
 		if (SKilLType.isPrimitive(type)) {
-			
+
 			return SkillObjectCreator.valueOf(type, attributeValue.getString(STANDARD_VALUE_KEY));
-			
+
 		} else if (SKilLType.isCollection(type)) {
-			
+
 			JSONArray attributeArray = attributeValue.getJSONArray(STANDARD_VALUE_KEY);
 			String valueType = attributeValue.getString(STANDARD_VALUE_TYPE_KEY);
 			String parsedValueType = parseAttributeType(valueType);
 			return parseJsonCollection(attributeArray, type, parsedValueType);
-			
+
 		} else if (SKilLType.isMap(type)) {
-			List<JSONObject> keyList = getKeys(attributeValue);
-			String valueType = attributeValue.getString(STANDARD_VALUE_TYPE_KEY);
-			String parsedValueType = parseAttributeType(valueType);
-			JSONArray keyTypes = attributeValue.getJSONArray(STANDARD_KEY_TYPE_KEY);
-			return parseJsonMap(keyList, keyTypes, parsedValueType);
-			
+			return parseJsonMap(attributeValue);
 		} else {
-			
+
 			return createSkillObjectFromJSON(attributeValue);
 		}
 	}
 
-	private static Object parseJsonMap(List<JSONObject> keyList, JSONArray keyTypes, String parsedValueType) {
-		new HashMap<>();
-		
-		return null;
-	}
+	/**
+	 * Parse a JSON 'map' to a java map object.
+	 * @param jsonMap
+	 * @return
+	 * @throws ClassNotFoundException
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 * @throws JSONException
+	 */
+	private static Map parseJsonMap(JSONObject jsonMap)
+			throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException,
+			IllegalAccessException, IllegalArgumentException, InvocationTargetException, JSONException {
+		HashMap resultMap = new HashMap<>();
 
-	private static ArrayList<JSONObject> getKeys(JSONObject attributeValues) {
-		ArrayList<JSONObject> keys = new ArrayList<>();
-		for(String attributeKey : attributeValues.keySet()){
-			if(attributeKey.equals(STANDARD_CLASS_KEY) 
-					|| attributeKey.equals(STANDARD_VALUE_TYPE_KEY)
-					|| attributeKey.equals(STANDARD_KEY_TYPE_KEY)){
-				continue;
+		JSONArray mapEntries = jsonMap.getJSONArray(STANDARD_ENTRY_LIST_KEY);
+		String parsedKeyType = parseAttributeType(jsonMap.getString(STANDARD_KEY_TYPE_KEY));
+		String parsedValueType = parseAttributeType(jsonMap.getString(STANDARD_VALUE_TYPE_KEY));
+
+		for (int i = 0; i < mapEntries.length(); i++) {
+			JSONObject currentEntry = mapEntries.getJSONObject(i);
+
+			if (SKilLType.isMap(parsedValueType)) { //Recursively handly map-type values
+				Object key;
+				Map value = parseJsonMap(currentEntry.getJSONObject(STANDARD_VALUE_KEY));
+				
+				// Handle primitive type keys
+				if (SKilLType.isPrimitive(parsedKeyType)) {
+					key = SkillObjectCreator.valueOf(parsedKeyType, currentEntry.getString(STANDARD_KEY_KEY));
+				} else { // Create regular object as key
+					key = createSkillObjectFromJSON(currentEntry.getJSONObject(STANDARD_KEY_KEY));
+				}
+				
+				resultMap.put(key, value);
+			} else { // Map has non-map object as value
+				Object key;
+				Object value;
+
+				// Handle primitive type keys
+				if (SKilLType.isPrimitive(parsedKeyType)) {
+					key = SkillObjectCreator.valueOf(parsedKeyType, currentEntry.getString(STANDARD_KEY_KEY));
+				} else { // Create regular object as key
+					key = createSkillObjectFromJSON(currentEntry.getJSONObject(STANDARD_KEY_KEY));
+				}
+
+				// Handle primitive type values
+				if (SKilLType.isPrimitive(parsedValueType)) {
+					value = SkillObjectCreator.valueOf(parsedValueType, currentEntry.getString(STANDARD_VALUE_KEY));
+				} else { // Create regular object as value
+					value = createSkillObjectFromJSON(currentEntry.getJSONObject(STANDARD_VALUE_KEY));
+				}
+
+				resultMap.put(key, value);
 			}
-			keys.add(attributeValues.getJSONObject(attributeKey));
 		}
-		
-		return keys;
+
+		return resultMap;
 	}
 
+	/**
+	 * Parse a collection from the given JSONArray
+	 * 
+	 * @param attributeArray
+	 *            The JSONArray to be parsed
+	 * @param collectionType
+	 *            The collections type e.g. "java.util.ArrayList"
+	 * @param valueType
+	 *            The type of the collections values
+	 * @return
+	 * @throws ClassNotFoundException
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 * @throws JSONException
+	 */
 	private static Collection<?> parseJsonCollection(JSONArray attributeArray, String collectionType, String valueType)
 			throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException,
 			IllegalAccessException, IllegalArgumentException, InvocationTargetException, JSONException {
@@ -239,15 +299,6 @@ public class JSONReader {
 		JSONArray content = new JSONArray(fileTokens);
 		return content;
 
-	}
-	
-	private static List<String> parseMapKeyTypes(JSONArray keyTypes){
-		List<String> parsedMapKeys = new ArrayList<>();
-		for(int i = 0; i < keyTypes.length(); i++){
-			String parsedKey = parseAttributeType(keyTypes.getString(i));
-			parsedMapKeys.add(parsedKey);
-		}
-		return parsedMapKeys;
 	}
 
 	private static String parseAttributeType(String type) {
