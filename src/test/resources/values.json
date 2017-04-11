@@ -1,6 +1,7 @@
 [	
 	{
 		"ObjectName" : "Test1",
+		"ExpectedError" : "false",
 		"ClassName" : "age.Age",
 		"age" : 
 		{
@@ -10,6 +11,7 @@
 	},
 	{
 		"ObjectName" : "Test2",
+		"ExpectedError" : "false",
 		"ClassName" : "basicTypes.BasicIntegers",
 		"int8":
 		{	
@@ -59,6 +61,7 @@
 	},	
 	{
 		"ObjectName" : "Test3",
+		"ExpectedError" : "false",
 		"ClassName" : "container.Container",
 		"arr" : 
 		{
