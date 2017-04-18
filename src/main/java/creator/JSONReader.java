@@ -274,4 +274,8 @@ public class JSONReader {
 		String parsedType = SKilLType.getJavaType(type);
 		return (parsedType == null) ? type : parsedType;
 	}
+
+	public static boolean shouldExpectException(JSONObject obj){
+		return obj.getBoolean(STANDARD_EXPECTED_ERROR_KEY);
+	}
 }
