@@ -32,39 +32,7 @@ public class JSONReader {
 	private static final String STANDARD_ENTRY_LIST_KEY = "Entries";
 
 	public static void main(String[] args) {
-		Path path = Paths.get(System.getProperty("user.dir"), "src", "test", "resources");
-		if (args.length == 0) {
-			path = path.resolve("values.json");
-		}
-		try {
-			JSONArray currentJSON = readJSON(path.toFile());
-			for (int i = 0; i < currentJSON.length(); i++) {
-				JSONObject currentTest = currentJSON.getJSONObject(i);
-				System.out.println(currentTest.get(STANDARD_OBJECTNAME_KEY));
-				SkillObject obj = createSkillObjectFromJSON(currentTest);
-				System.out.println(obj.prettyString());
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		}
+
 	}
 
 	/**
@@ -295,9 +263,9 @@ public class JSONReader {
 	 * @throws MalformedURLException
 	 * @throws IOException
 	 */
-	public static JSONArray readJSON(File file) throws JSONException, MalformedURLException, IOException {
+	public static JSONObject readJSON(File file) throws JSONException, MalformedURLException, IOException {
 		JSONTokener fileTokens = new JSONTokener(new java.io.FileInputStream(file));
-		JSONArray content = new JSONArray(fileTokens);
+		JSONObject content = new JSONObject(fileTokens);
 		return content;
 
 	}
