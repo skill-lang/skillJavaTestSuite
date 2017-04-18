@@ -32,25 +32,33 @@ public class JSONReaderTest {
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
+			assertTrue(false);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
+			assertTrue(false);
 		} catch (IOException e) {
 			e.printStackTrace();
+			assertTrue(false);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+			assertTrue(false);
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
+			assertTrue(false);
 		} catch (SecurityException e) {
 			e.printStackTrace();
+			assertTrue(false);
 		} catch (InstantiationException e) {
 			e.printStackTrace();
+			assertTrue(false);
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
+			assertTrue(false);
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
+			assertTrue(false);
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
-		} finally {
 			assertTrue(false);
 		}
 	}
