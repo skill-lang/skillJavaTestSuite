@@ -17,6 +17,9 @@ import de.ust.skill.common.java.internal.SkillObject;
 
 public class JSONReaderTest {
 
+	/**
+	 * Tests the object generation capabilities.
+	 */
 	@Test
 	public void test() {
 		Path path = Paths.get(System.getProperty("user.dir"), "src", "test", "resources");
