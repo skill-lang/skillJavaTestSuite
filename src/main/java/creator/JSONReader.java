@@ -26,6 +26,7 @@ public class JSONReader {
 
 	private static final String STANDARD_CLASS_KEY = "ClassName";
 	private static final String STANDARD_OBJECTNAME_KEY = "ObjectName";
+	private static final String STANDARD_EXPECTED_ERROR_KEY = "ExpectedError";
 	private static final String STANDARD_KEY_KEY = "Key";
 	private static final String STANDARD_VALUE_KEY = "Value";
 	private static final String STANDARD_VALUE_TYPE_KEY = "ValueType";
@@ -120,7 +121,9 @@ public class JSONReader {
 			Map<String, String> fieldTypes) throws ClassNotFoundException, NoSuchMethodException, SecurityException,
 			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		for (String attributeKey : jsonObect.keySet()) {
-			if (attributeKey.equals(STANDARD_OBJECTNAME_KEY) || attributeKey.equalsIgnoreCase(STANDARD_CLASS_KEY)) {
+			if (attributeKey.equals(STANDARD_OBJECTNAME_KEY) 
+					|| attributeKey.equalsIgnoreCase(STANDARD_CLASS_KEY)
+					|| attributeKey.equalsIgnoreCase(STANDARD_EXPECTED_ERROR_KEY)) {
 				continue;
 			}
 			String fieldName = attributeKey;
