@@ -28,6 +28,7 @@ public class JSONReaderTest {
 				JSONObject currentTest = currentJSON.getJSONObject(i);
 				SkillObject obj = JSONReader.createSkillObjectFromJSON(currentTest);
 				System.out.println(obj.prettyString());
+				assertTrue(true);
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -49,6 +50,8 @@ public class JSONReaderTest {
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
+		} finally {
+			assertTrue(false);
 		}
 	}
 
