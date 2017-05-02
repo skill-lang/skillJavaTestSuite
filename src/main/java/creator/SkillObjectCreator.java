@@ -6,8 +6,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
+import org.json.JSONObject;
+
+import age.api.SkillFile;
+import de.ust.skill.common.java.api.Access;
+import de.ust.skill.common.java.internal.FieldDeclaration;
 import de.ust.skill.common.java.internal.SkillObject;
 
 public class SkillObjectCreator {
@@ -44,6 +50,40 @@ public class SkillObjectCreator {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Initialise a SKilLObject based on a JSON representation of it and its data
+	 * @param sf SKilL file from which type and field definitions are loaded
+	 * @param obj JSON representation of the object which should be initialised
+	 * @return
+	 */
+	public static SkillObject initSkillObject(SkillFile sf, JSONObject obj) {
+		Map<String, Access<?>> types = new HashMap<>();
+		Map<String, HashMap<String, FieldDeclaration<?, ?>>> typeFieldMapping = new HashMap<>();
+		
+		//Iterate over all SkilL types present in the given SKilL file
+		for (Access<?> currentType : sf.allTypes()) {
+			types.put(currentType.name(), currentType);
+
+			//Save all fields defined in this type into a map
+			HashMap<String, FieldDeclaration<?, ?>> fieldMapping = new HashMap<String, FieldDeclaration<?, ?>>();
+			Iterator<? extends de.ust.skill.common.java.api.FieldDeclaration<?>> iter = currentType.fields();
+			while (iter.hasNext()) {
+				FieldDeclaration<?, ?> fieldDeclaration = (FieldDeclaration<?, ?>) iter.next();
+				fieldMapping.put(fieldDeclaration.name(), fieldDeclaration);
+			}
+
+			typeFieldMapping.put(currentType.name(), fieldMapping);
+		}
+
+		SkillObject targetObj = types.get(obj.getString("type")).make();
+		targetObj.skillName();
+		
+		//TODO Iterate over all fields in JSON & set those fields
+		//TODO Write object to file
+		sf.close();
+		return targetObj;
 	}
 
 	/**
@@ -193,8 +233,6 @@ public class SkillObjectCreator {
 		}
 	}
 
-
-	
 	/**
 	 * Return the method name of the setter method responsible for the field
 	 * with the name 'fieldName'.
