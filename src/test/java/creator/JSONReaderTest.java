@@ -7,22 +7,26 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import age.api.SkillFile;
+import de.ust.skill.common.java.api.Access;
+import de.ust.skill.common.java.api.SkillException;
+import de.ust.skill.common.java.internal.FieldDeclaration;
 import de.ust.skill.common.java.internal.SkillObject;
 
-public class JSONReaderTest {
+public class JSONReaderTest extends common.CommonTest{
 
-	@Rule //http://stackoverflow.com/a/2935935
+	@Rule // http://stackoverflow.com/a/2935935
 	public final ExpectedException exception = ExpectedException.none();
 
 	private static Path path;
@@ -37,7 +41,7 @@ public class JSONReaderTest {
 	}
 
 	@Before
-	public void loadNextJSONObject() throws JSONException, MalformedURLException, IOException{
+	public void loadNextJSONObject() throws JSONException, MalformedURLException, IOException {
 		this.currentJSON = JSONReader.readJSON(path.toFile());
 	}
 
@@ -52,4 +56,24 @@ public class JSONReaderTest {
 		System.out.println(obj.prettyString());
 		assertTrue(true);
 	}
+	
+	@Test
+	public void test() throws SkillException, IOException{
+        Map<String, Access<?>> types = new HashMap<>();
+		Map<String, HashMap<String, FieldDeclaration<?, ?>>> typeFieldMapping = new HashMap<>();
+		
+		SkillFile sf = SkillFile.open(path);
+        reflectiveInit(sf);
+        
+		creator.SkillObjectCreator.generateSkillFileMappings(sf, types, typeFieldMapping);
+		
+		//Create necessary objects
+		SkillObject jsonObjName1 = types.get("Typename").make();
+		SkillObject jsonObjName2 = types.get("Typename").make();
+		
+		jsonObjName1.set((de.ust.skill.common.java.api.FieldDeclaration<String>) typeFieldMapping.get("Typename").get("Fieldname"), "Value");
+		
+		sf.close();
+	}
+	
 }
