@@ -53,20 +53,24 @@ public class SkillObjectCreator {
 	}
 
 	/**
-	 * Initialise a SKilLObject based on a JSON representation of it and its data
-	 * @param sf SKilL file from which type and field definitions are loaded
-	 * @param obj JSON representation of the object which should be initialised
+	 * Initialise a SKilLObject based on a JSON representation of it and its
+	 * data
+	 * 
+	 * @param sf
+	 *            SKilL file from which type and field definitions are loaded
+	 * @param jsonObj
+	 *            JSON representation of the object which should be initialised
 	 * @return
 	 */
-	public static SkillObject initSkillObject(SkillFile sf, JSONObject obj) {
-		Map<String, Access<?>> types = new HashMap<>();
-		Map<String, HashMap<String, FieldDeclaration<?, ?>>> typeFieldMapping = new HashMap<>();
+	public static void generateSkillFileMappings(SkillFile sf,
+			Map<String, Access<?>> types,
+			Map<String, HashMap<String, FieldDeclaration<?, ?>>> typeFieldMapping) {
 		
-		//Iterate over all SkilL types present in the given SKilL file
+		// Iterate over all SkilL types present in the given SKilL file
 		for (Access<?> currentType : sf.allTypes()) {
 			types.put(currentType.name(), currentType);
 
-			//Save all fields defined in this type into a map
+			// Save all fields defined in this type into a map
 			HashMap<String, FieldDeclaration<?, ?>> fieldMapping = new HashMap<String, FieldDeclaration<?, ?>>();
 			Iterator<? extends de.ust.skill.common.java.api.FieldDeclaration<?>> iter = currentType.fields();
 			while (iter.hasNext()) {
@@ -76,14 +80,6 @@ public class SkillObjectCreator {
 
 			typeFieldMapping.put(currentType.name(), fieldMapping);
 		}
-
-		SkillObject targetObj = types.get(obj.getString("type")).make();
-		targetObj.skillName();
-		
-		//TODO Iterate over all fields in JSON & set those fields
-		//TODO Write object to file
-		sf.close();
-		return targetObj;
 	}
 
 	/**
