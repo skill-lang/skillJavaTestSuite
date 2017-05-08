@@ -30,6 +30,7 @@ public class JSONReaderTest extends common.CommonTest{
 	public final ExpectedException exception = ExpectedException.none();
 
 	private static Path path;
+	private static Path skillFilePath;
 	private JSONObject currentJSON;
 
 	/**
@@ -38,6 +39,7 @@ public class JSONReaderTest extends common.CommonTest{
 	@BeforeClass
 	public static void init() throws JSONException, MalformedURLException, IOException {
 		path = Paths.get(System.getProperty("user.dir"), "src", "test", "resources", "test4.json");
+		skillFilePath = Paths.get(System.getProperty("user.dir"), "src", "test", "resources", "age-example.sf");
 	}
 
 	@Before
@@ -45,7 +47,6 @@ public class JSONReaderTest extends common.CommonTest{
 		this.currentJSON = JSONReader.readJSON(path.toFile());
 	}
 
-	@Test
 	public void jsonTest() throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		JSONObject currentTest = currentJSON;
 		if(JSONReader.shouldExpectException(currentTest)){
@@ -62,7 +63,7 @@ public class JSONReaderTest extends common.CommonTest{
         Map<String, Access<?>> types = new HashMap<>();
 		Map<String, HashMap<String, FieldDeclaration<?, ?>>> typeFieldMapping = new HashMap<>();
 		
-		SkillFile sf = SkillFile.open(path);
+		SkillFile sf = SkillFile.open(skillFilePath);
         reflectiveInit(sf);
         
 		creator.SkillObjectCreator.generateSkillFileMappings(sf, types, typeFieldMapping);
@@ -71,9 +72,13 @@ public class JSONReaderTest extends common.CommonTest{
 		SkillObject jsonObjName1 = types.get("Typename").make();
 		SkillObject jsonObjName2 = types.get("Typename").make();
 		
-		jsonObjName1.set((de.ust.skill.common.java.api.FieldDeclaration<String>) typeFieldMapping.get("Typename").get("Fieldname"), "Value");
+		jsonObjName1.set(cast(typeFieldMapping.get("Typename").get("Fieldname")), "Value");
 		
 		sf.close();
+	}
+	
+	protected static <T, U> de.ust.skill.common.java.api.FieldDeclaration<T> cast(de.ust.skill.common.java.api.FieldDeclaration<U> arg){
+		return (de.ust.skill.common.java.api.FieldDeclaration<T>)arg;
 	}
 	
 }
