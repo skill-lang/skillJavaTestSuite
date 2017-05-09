@@ -185,4 +185,8 @@ abstract public class CommonTest {
             throw new IllegalStateException();
         }
     }
+    
+    protected static <T, U> de.ust.skill.common.java.api.FieldDeclaration<T> cast(de.ust.skill.common.java.api.FieldDeclaration<U> arg){
+		return (de.ust.skill.common.java.api.FieldDeclaration<T>)arg;
+	}
 }
