@@ -189,4 +189,18 @@ abstract public class CommonTest {
     protected static <T, U> de.ust.skill.common.java.api.FieldDeclaration<T> cast(de.ust.skill.common.java.api.FieldDeclaration<U> arg){
 		return (de.ust.skill.common.java.api.FieldDeclaration<T>)arg;
 	}
+    
+    protected static String getProperCollectionType(String type){
+    	if(type.contains("list")){
+    		return "java.util.LinkedList";
+    	}else if(type.contains("set")){
+    		return "java.util.HashSet";
+    	}else if(type.contains("[]")){
+    		return "java.util.ArrayList";
+    	}else{
+    		throw new IllegalArgumentException("Could not parse provided SKilL collection type.\n"
+    				+ "Type was: " + type + "\n"
+    				+ "Expected one of { 'list', 'set', 'array' }");
+    	}
+    }
 }
