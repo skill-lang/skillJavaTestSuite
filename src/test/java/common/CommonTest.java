@@ -208,11 +208,23 @@ abstract public class CommonTest {
 			de.ust.skill.common.java.api.FieldDeclaration<?> declaration) {
 
 		if (declaration.toString().contains("i8")) {
-			return new Byte((byte) value);
+			if (Math.abs(value) > Byte.MAX_VALUE) {
+				return value;
+			} else {
+				return new Byte((byte) value);
+			}
 		} else if (declaration.toString().contains("i16")) {
-			return new Short((short) value);
+			if (Math.abs(value) > Short.MAX_VALUE) {
+				return value;
+			} else {
+				return new Short((short) value);
+			}
 		} else if (declaration.toString().contains("i32")) {
-			return new Integer((int) value);
+			if (Math.abs(value) > Integer.MAX_VALUE) {
+				return value;
+			} else {
+				return new Integer((int) value);
+			}
 		} else if (declaration.toString().contains("i64") || declaration.toString().contains("v64")) {
 			return new Long(value);
 		} else {
@@ -226,21 +238,71 @@ abstract public class CommonTest {
 			de.ust.skill.common.java.api.FieldDeclaration<?> declaration) {
 
 		if (declaration.toString().contains("f32")) {
-			return new Float((float) value);
+			if (Math.abs(value) > Float.MAX_VALUE) {
+				return value;
+			} else {
+				return new Float((float) value);
+			}
 		} else if (declaration.toString().contains("f64")) {
 			return new Double(value);
 		}
 		if (declaration.toString().contains("i8")) {
-			return new Byte((byte) value);
+			if (Math.abs(value) > Byte.MAX_VALUE) {
+				return value;
+			} else {
+				return new Byte((byte) value);
+			}
 		} else if (declaration.toString().contains("i16")) {
-			return new Short((short) value);
+			if (Math.abs(value) > Short.MAX_VALUE) {
+				return value;
+			} else {
+				return new Short((short) value);
+			}
 		} else if (declaration.toString().contains("i32")) {
-			return new Integer((int) value);
+			if (Math.abs(value) > Integer.MAX_VALUE) {
+				return value;
+			} else {
+				return new Integer((int) value);
+			}
 		} else if (declaration.toString().contains("i64") || declaration.toString().contains("v64")) {
-			return new Long((long) value);
+			if (Math.abs(value) > Long.MAX_VALUE) {
+				return value;
+			} else {
+				return new Long((long) value);
+			}
+		} else {
+			throw new IllegalArgumentException(
+					"The given fieldDeclaration is not supported.\n" + "Declaration was: " + declaration.toString()
+							+ "\n" + "But should contain one of the following : {'i8','i16','i32','i64,'f32','f64'}");
+		}
+	}
+
+	protected static Object wrapPrimitveMapTypes(String value,
+			de.ust.skill.common.java.api.FieldDeclaration<?> mapDeclaration, boolean isKey) {
+		String[] mapDeclarationSplit = mapDeclaration.toString().split(",");
+
+		String declaration = isKey ? mapDeclarationSplit[0] : mapDeclarationSplit[1];
+
+		if (declaration.toString().contains("f32")) {
+			return new Float(Float.parseFloat(value));
+		} else if (declaration.toString().contains("f64")) {
+			return new Double(Double.parseDouble(value));
+		} else if (declaration.toString().contains("i8")) {
+			return new Byte(Byte.parseByte(value));
+		} else if (declaration.toString().contains("i16")) {
+			return new Short(Short.parseShort(value));
+		} else if (declaration.toString().contains("i32")) {
+			return new Integer(Integer.parseInt(value));
+		} else if (declaration.toString().contains("i64") || declaration.toString().contains("v64")) {
+			return new Long(Long.parseLong(value));
+		} else if (declaration.toString().contains("string")) {
+			return value;
+		} else if (declaration.toString().contains("bool")) {
+			return new Boolean(Boolean.parseBoolean(value));
 		} else {
 			throw new IllegalArgumentException("The given fieldDeclaration is not supported.\n" + "Declaration was: "
-					+ declaration.toString() + "\n" + "But should contain one of the following : {'i8','i16','i32','i64,'f32','f64'}");
+					+ declaration.toString() + "\n"
+					+ "But should contain one of the following : {'i8','i16','i32','i64,'f32','f64','string','bool'}");
 		}
 	}
 }
