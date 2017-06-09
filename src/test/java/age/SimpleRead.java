@@ -16,7 +16,7 @@ public class SimpleRead {
         // @note: you do not need to delete the file, because it is never created
         SkillFile sf = SkillFile.open("age-test.sf", Mode.Create);
         for (Age a : sf.Ages())
-            System.out.println(a.prettyString());
+            System.out.println(a.prettyString(sf));
     }
 
     @Test
