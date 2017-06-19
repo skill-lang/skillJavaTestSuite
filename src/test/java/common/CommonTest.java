@@ -76,7 +76,7 @@ abstract public class CommonTest {
             try {
                 for (int i = reflectiveInitSize; i != 0; i--)
                     t.make();
-            } catch (@SuppressWarnings("unused") SkillException e) {
+            } catch (SkillException e) {
                 // the type can not have more instances
             }
         });
@@ -150,8 +150,8 @@ abstract public class CommonTest {
 
         case 15: {
             ConstantLengthArray<T> cla = (ConstantLengthArray<T>) type;
-            ArrayList<Object> rval = new ArrayList<>((int) cla.length);
-            for (int i = (int) cla.length; i != 0; i--)
+            ArrayList<Object> rval = new ArrayList<>(cla.length);
+            for (int i = cla.length; i != 0; i--)
                 rval.add(value(sf, cla.groundType));
             return (T) rval;
         }
