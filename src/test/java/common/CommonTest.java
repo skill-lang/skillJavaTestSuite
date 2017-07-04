@@ -42,13 +42,14 @@ abstract public class CommonTest {
 	public CommonTest() {
 		super();
 	}
-
+	
+	
 	protected static Path createFile(String name) throws Exception {
 		File dir = new File("src/test/resources/serializedTestfiles/");
 		if (!dir.exists()) {
 			dir.mkdirs();
 		}
-		return new File("src/test/resources/serializedTestfiles/" + name).toPath();
+		return new File("src/test/resources/serializedTestfiles/" + name + ".sf").toPath();
 	}
 
 	/**
