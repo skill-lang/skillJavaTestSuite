@@ -2,6 +2,9 @@
 src/main/java/*
 !src/main/java/creator/
 
+#Ignore serializedTestfiles
+src/test/resources/serializedTestfiles/
+
 # generic read tests
 **/Generic*Test.java
 
