@@ -54,7 +54,7 @@ public class JSONReaderTest extends common.CommonTest{
 			exception.expect(Exception.class);
 		}
 		SkillObject obj = JSONReader.createSkillObjectFromJSON(currentTest);
-		System.out.println(obj.prettyString());
+		System.out.println(obj.prettyString(null));
 		assertTrue(true);
 	}
 	
