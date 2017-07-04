@@ -51,7 +51,12 @@ abstract public class CommonTest {
 		// r.deleteOnExit();
 		return r.toPath();
 	}
-
+	
+	protected static Path createFile(String name) throws Exception {
+		return new File("src/test/resources/serializedTestfiles/" + name).toPath();
+	}
+	
+	
 	/**
 	 * TODO move to common tests
 	 */
