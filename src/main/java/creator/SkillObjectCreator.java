@@ -11,7 +11,7 @@ import java.util.Map;
 
 import org.json.JSONObject;
 
-import age.api.SkillFile;
+import de.ust.skill.common.java.api.SkillFile;
 import de.ust.skill.common.java.api.Access;
 import de.ust.skill.common.java.internal.FieldDeclaration;
 import de.ust.skill.common.java.internal.SkillObject;
@@ -34,7 +34,7 @@ public class SkillObjectCreator {
 		try {
 			SkillObject obj = instantiateSkillObject(className, values, fieldTypes);
 
-			System.out.println(obj.prettyString());
+			System.out.println(obj.prettyString(null));
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
 		} catch (SecurityException e) {
