@@ -44,8 +44,8 @@ abstract public class CommonTest {
 	}
 	
 	
-	protected static Path createFile(String name) throws Exception {
-		File dir = new File("src/test/resources/serializedTestfiles/");
+	protected static Path createFile(String packagePath,String name) throws Exception {
+		File dir = new File("src/test/resources/serializedTestfiles/" + packagePath);
 		if (!dir.exists()) {
 			dir.mkdirs();
 		}
