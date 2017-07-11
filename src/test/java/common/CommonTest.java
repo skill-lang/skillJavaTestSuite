@@ -49,7 +49,11 @@ abstract public class CommonTest {
 		if (!dir.exists()) {
 			dir.mkdirs();
 		}
-		return new File("src/test/resources/serializedTestfiles/" + packagePath + name + ".sf").toPath();
+		File file = new File("src/test/resources/serializedTestfiles/" + packagePath + name + ".sf");
+		if(file.exists()){
+			file.delete();
+		}
+		return file.toPath();
 	}
 
 	/**
