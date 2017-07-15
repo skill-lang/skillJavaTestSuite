@@ -209,7 +209,7 @@ abstract public class CommonTest {
 			return "java.util.LinkedList";
 		} else if (type.contains("set")) {
 			return "java.util.HashSet";
-		} else if (type.contains("[]")) {
+		} else if (type.contains("[")) {
 			return "java.util.ArrayList";
 		} else {
 			throw new IllegalArgumentException("Could not parse provided SKilL collection type.\n" + "Type was: " + type
