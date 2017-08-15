@@ -39,42 +39,32 @@ abstract public class CommonTest {
      */
     private static final int reflectiveInitSize = 10;
 
-	public CommonTest() {
-		super();
-	}
-	
-	
-	protected static Path createFile(String packagePath,String name) throws Exception {
-		File dir = new File("src/test/resources/serializedTestfiles/" + packagePath);
-		if (!dir.exists()) {
-			dir.mkdirs();
-		}
-		File file = new File("src/test/resources/serializedTestfiles/" + packagePath + name + ".sf");
-		if(file.exists()){
-			file.delete();
-		}
-		return file.toPath();
-	}
+    public CommonTest() {
+        super();
+    }
 
-    /**
-     * TODO move to common tests
-     */
+    protected static Path createFile(String packagePath, String name) throws Exception {
+        File dir = new File("src/test/resources/serializedTestfiles/" + packagePath);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        File file = new File("src/test/resources/serializedTestfiles/" + packagePath + name + ".sf");
+        if (file.exists()) {
+            file.delete();
+        }
+        return file.toPath();
+    }
+
     protected static Path tmpFile(String string) throws Exception {
         File r = File.createTempFile(string, ".sf");
         // r.deleteOnExit();
         return r.toPath();
     }
 
-    /**
-     * TODO move to common tests
-     */
     protected final static String sha256(String name) throws Exception {
         return sha256(new File("src/test/resources/" + name).toPath());
     }
 
-    /**
-     * TODO move to common tests
-     */
     protected final static String sha256(Path path) throws Exception {
         byte[] bytes = Files.readAllBytes(path);
         StringBuilder sb = new StringBuilder();
@@ -161,232 +151,76 @@ abstract public class CommonTest {
         case 14:
             return (T) "☢☢☢";
 
-		case 15: {
-			ConstantLengthArray<T> cla = (ConstantLengthArray<T>) type;
-			ArrayList<Object> rval = new ArrayList<>((int) cla.length);
-			for (int i = (int) cla.length; i != 0; i--)
-				rval.add(value(sf, cla.groundType));
-			return (T) rval;
-		}
-		case 17: {
-			SingleArgumentType<?, ?> cla = (SingleArgumentType<?, ?>) type;
-			int length = (int) Math.sqrt(reflectiveInitSize);
-			ArrayList<Object> rval = new ArrayList<>(length);
-			while (0 != length--)
-				rval.add(value(sf, cla.groundType));
-			return (T) rval;
-		}
-		case 18: {
-			SingleArgumentType<?, ?> cla = (SingleArgumentType<?, ?>) type;
-			int length = (int) Math.sqrt(reflectiveInitSize);
-			LinkedList<Object> rval = new LinkedList<>();
-			while (0 != length--)
-				rval.add(value(sf, cla.groundType));
-			return (T) rval;
-		}
-		case 19: {
-			SingleArgumentType<?, ?> cla = (SingleArgumentType<?, ?>) type;
-			int length = (int) Math.sqrt(reflectiveInitSize);
-			HashSet<Object> rval = new HashSet<>();
-			while (0 != length--)
-				rval.add(value(sf, cla.groundType));
-			return (T) rval;
-		}
-		case 20:
-			return (T) new HashMap<Object, Object>();
-		default:
-			throw new IllegalStateException();
-		}
-	}
+        case 15: {
+            ConstantLengthArray<T> cla = (ConstantLengthArray<T>) type;
+            ArrayList<Object> rval = new ArrayList<>((int) cla.length);
+            for (int i = (int) cla.length; i != 0; i--)
+                rval.add(value(sf, cla.groundType));
+            return (T) rval;
+        }
+        case 17: {
+            SingleArgumentType<?, ?> cla = (SingleArgumentType<?, ?>) type;
+            int length = (int) Math.sqrt(reflectiveInitSize);
+            ArrayList<Object> rval = new ArrayList<>(length);
+            while (0 != length--)
+                rval.add(value(sf, cla.groundType));
+            return (T) rval;
+        }
+        case 18: {
+            SingleArgumentType<?, ?> cla = (SingleArgumentType<?, ?>) type;
+            int length = (int) Math.sqrt(reflectiveInitSize);
+            LinkedList<Object> rval = new LinkedList<>();
+            while (0 != length--)
+                rval.add(value(sf, cla.groundType));
+            return (T) rval;
+        }
+        case 19: {
+            SingleArgumentType<?, ?> cla = (SingleArgumentType<?, ?>) type;
+            int length = (int) Math.sqrt(reflectiveInitSize);
+            HashSet<Object> rval = new HashSet<>();
+            while (0 != length--)
+                rval.add(value(sf, cla.groundType));
+            return (T) rval;
+        }
+        case 20:
+            return (T) new HashMap<Object, Object>();
+        default:
+            throw new IllegalStateException();
+        }
+    }
 
-	protected static <T, U> de.ust.skill.common.java.api.FieldDeclaration<T> cast(
-			de.ust.skill.common.java.api.FieldDeclaration<U> arg) {
-		return (de.ust.skill.common.java.api.FieldDeclaration<T>) arg;
-	}
+    protected static <T, U> de.ust.skill.common.java.api.FieldDeclaration<T> cast(
+            de.ust.skill.common.java.api.FieldDeclaration<U> arg) {
+        return (de.ust.skill.common.java.api.FieldDeclaration<T>) arg;
+    }
 
-	protected static String getProperCollectionType(String type) {
-		if (type.contains("list")) {
-			return "java.util.LinkedList";
-		} else if (type.contains("set")) {
-			return "java.util.HashSet";
-		} else if (type.contains("[")) {
-			return "java.util.ArrayList";
-		} else {
-			throw new IllegalArgumentException("Could not parse provided SKilL collection type.\n" + "Type was: " + type
-					+ "\n" + "Expected one of { 'list', 'set', 'array' }");
-		}
-	}
+    protected <T> ArrayList<T> array(T... ts) {
+        ArrayList<T> rval = new ArrayList<>();
+        for (T t : ts)
+            rval.add(t);
+        return rval;
+    }
 
-	protected static Object wrapPrimitveTypes(long value,
-			de.ust.skill.common.java.api.FieldDeclaration<?> declaration) {
+    protected <T> LinkedList<T> list(T... ts) {
+        LinkedList<T> rval = new LinkedList<>();
+        for (T t : ts)
+            rval.add(t);
+        return rval;
+    }
 
-		if (declaration.toString().contains("i8")) {
-			if (Math.abs(value) > Byte.MAX_VALUE) {
-				return value;
-			} else {
-				return new Byte((byte) value);
-			}
-		} else if (declaration.toString().contains("i16")) {
-			if (Math.abs(value) > Short.MAX_VALUE) {
-				return value;
-			} else {
-				return new Short((short) value);
-			}
-		} else if (declaration.toString().contains("i32")) {
-			if (Math.abs(value) > Integer.MAX_VALUE) {
-				return value;
-			} else {
-				return new Integer((int) value);
-			}
-		} else if (declaration.toString().contains("i64") || declaration.toString().contains("v64")) {
-			return new Long(value);
-		} else {
-			throw new IllegalArgumentException(
-					"The given fieldDeclaration is not supported.\n" + "Declaration was: " + declaration.toString()
-							+ "\n" + "But should contain one of the following : {'i8','i16','i32','i64'}");
-		}
-	}
+    protected <T> HashSet<T> set(T... ts) {
+        HashSet<T> rval = new HashSet<>();
+        for (T t : ts)
+            rval.add(t);
+        return rval;
+    }
 
-	protected static Object wrapPrimitveTypes(double value,
-			de.ust.skill.common.java.api.FieldDeclaration<?> declaration) {
+    protected <K, V> HashMap<K, V> map() {
+        return new HashMap<>();
+    }
 
-		if (declaration.toString().contains("f32")) {
-			if (Math.abs(value) > Float.MAX_VALUE) {
-				return value;
-			} else {
-				return new Float((float) value);
-			}
-		} else if (declaration.toString().contains("f64")) {
-			return new Double(value);
-		}
-		if (declaration.toString().contains("i8")) {
-			if (Math.abs(value) > Byte.MAX_VALUE) {
-				return value;
-			} else {
-				return new Byte((byte) value);
-			}
-		} else if (declaration.toString().contains("i16")) {
-			if (Math.abs(value) > Short.MAX_VALUE) {
-				return value;
-			} else {
-				return new Short((short) value);
-			}
-		} else if (declaration.toString().contains("i32")) {
-			if (Math.abs(value) > Integer.MAX_VALUE) {
-				return value;
-			} else {
-				return new Integer((int) value);
-			}
-		} else if (declaration.toString().contains("i64") || declaration.toString().contains("v64")) {
-			if (Math.abs(value) > Long.MAX_VALUE) {
-				return value;
-			} else {
-				return new Long((long) value);
-			}
-		} else {
-			throw new IllegalArgumentException(
-					"The given fieldDeclaration is not supported.\n" + "Declaration was: " + declaration.toString()
-							+ "\n" + "But should contain one of the following : {'i8','i16','i32','i64,'f32','f64'}");
-		}
-	}
-	
-	protected static Object wrapPrimitveTypes(double value,
-			String declaration) {
-
-		if (declaration.contains("f32")) {
-			if (Math.abs(value) > Float.MAX_VALUE) {
-				return value;
-			} else {
-				return new Float((float) value);
-			}
-		} else if (declaration.toString().contains("f64")) {
-			return new Double(value);
-		}
-		if (declaration.contains("i8")) {
-			if (Math.abs(value) > Byte.MAX_VALUE) {
-				return value;
-			} else {
-				return new Byte((byte) value);
-			}
-		} else if (declaration.contains("i16")) {
-			if (Math.abs(value) > Short.MAX_VALUE) {
-				return value;
-			} else {
-				return new Short((short) value);
-			}
-		} else if (declaration.contains("i32")) {
-			if (Math.abs(value) > Integer.MAX_VALUE) {
-				return value;
-			} else {
-				return new Integer((int) value);
-			}
-		} else if (declaration.contains("i64") || declaration.toString().contains("v64")) {
-			if (Math.abs(value) > Long.MAX_VALUE) {
-				return value;
-			} else {
-				return new Long((long) value);
-			}
-		} else {
-			throw new IllegalArgumentException(
-					"The given fieldDeclaration is not supported.\n" + "Declaration was: " + declaration.toString()
-							+ "\n" + "But should contain one of the following : {'i8','i16','i32','i64,'f32','f64'}");
-		}
-	}
-
-	protected static Object wrapPrimitveMapTypes(String value,
-			de.ust.skill.common.java.api.FieldDeclaration<?> mapDeclaration, boolean isKey) {
-		String[] mapDeclarationSplit = mapDeclaration.toString().split(",");
-
-		String declaration = isKey ? mapDeclarationSplit[0] : mapDeclarationSplit[1];
-
-		if (declaration.toString().contains("f32")) {
-			return new Float(Float.parseFloat(value));
-		} else if (declaration.toString().contains("f64")) {
-			return new Double(Double.parseDouble(value));
-		} else if (declaration.toString().contains("i8")) {
-			return new Byte(Byte.parseByte(value));
-		} else if (declaration.toString().contains("i16")) {
-			return new Short(Short.parseShort(value));
-		} else if (declaration.toString().contains("i32")) {
-			return new Integer(Integer.parseInt(value));
-		} else if (declaration.toString().contains("i64") || declaration.toString().contains("v64")) {
-			return new Long(Long.parseLong(value));
-		} else if (declaration.toString().contains("string")) {
-			return value;
-		} else if (declaration.toString().contains("bool")) {
-			return new Boolean(Boolean.parseBoolean(value));
-		} else {
-			throw new IllegalArgumentException("The given fieldDeclaration is not supported.\n" + "Declaration was: "
-					+ declaration.toString() + "\n"
-					+ "But should contain one of the following : {'i8','i16','i32','i64,'f32','f64','string','bool'}");
-		}
-	}
-	protected static Object wrapPrimitveMapTypes(String value,
-			String mapDeclaration, boolean isKey) {
-		String[] mapDeclarationSplit = mapDeclaration.split(",");
-
-		String declaration = isKey ? mapDeclarationSplit[0] : mapDeclarationSplit[1];
-
-		if (declaration.toString().contains("f32")) {
-			return new Float(Float.parseFloat(value));
-		} else if (declaration.toString().contains("f64")) {
-			return new Double(Double.parseDouble(value));
-		} else if (declaration.toString().contains("i8")) {
-			return new Byte(Byte.parseByte(value));
-		} else if (declaration.toString().contains("i16")) {
-			return new Short(Short.parseShort(value));
-		} else if (declaration.toString().contains("i32")) {
-			return new Integer(Integer.parseInt(value));
-		} else if (declaration.toString().contains("i64") || declaration.toString().contains("v64")) {
-			return new Long(Long.parseLong(value));
-		} else if (declaration.toString().contains("string")) {
-			return value;
-		} else if (declaration.toString().contains("bool")) {
-			return new Boolean(Boolean.parseBoolean(value));
-		} else {
-			throw new IllegalArgumentException("The given fieldDeclaration is not supported.\n" + "Declaration was: "
-					+ declaration.toString() + "\n"
-					+ "But should contain one of the following : {'i8','i16','i32','i64,'f32','f64','string','bool'}");
-		}
-	}
+    protected <K, V> HashMap<K, V> put(HashMap<K, V> m, K key, V value) {
+        m.put(key, value);
+        return m;
+    }
 }
