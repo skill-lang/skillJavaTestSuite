@@ -5,6 +5,8 @@
     <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="1.8"/>
     <property name="source" value="1.8"/>
+    <property name="testdir" value="${user.dir}"/>
+
     <path id="skillJavaTestsuite.classpath">
         <pathelement location="target/scala-2.11/classes"/>
         <pathelement location="lib/skill.java.common.jar"/>
@@ -57,6 +59,7 @@
     <target depends="build-tests" name="test">
         <mkdir dir="${junit.output.dir}"/>
         <junit fork="yes" printsummary="withOutAndErr">
+		    <jvmarg value="-Duser.dir=${testdir}"/>
 			<classpath>
 				<pathelement location="target/scala-2.11/classes"/>
 				<pathelement location="target/scala-2.11/test-classes"/>
@@ -66,7 +69,7 @@
 				<pathelement location="lib/hamcrest-core-1.3.jar"/>
 	        </classpath>
             <formatter type="xml"/>
-            <batchtest todir="${junit.output.dir}">
+            <batchtest fork="yes" todir="${junit.output.dir}">
                 <fileset dir="target/scala-2.11/test-classes" includes="**/*.class" excludes="common/**,de/**"/>
             </batchtest>
         </junit>
@@ -76,6 +79,7 @@
         <mkdir dir="${junit.output.dir}"/>
 <jacoco:coverage destfile="junit/jacoco.exec">
         <junit fork="yes" forkmode="once" printsummary="withOutAndErr">
+		    <jvmarg value="-Duser.dir=${testdir}"/>
 			<classpath>
 				<pathelement location="target/scala-2.11/classes"/>
 				<pathelement location="target/scala-2.11/test-classes"/>
@@ -85,7 +89,7 @@
 				<pathelement location="lib/hamcrest-core-1.3.jar"/>
 	        </classpath>
             <formatter type="xml"/>
-            <batchtest todir="${junit.output.dir}">
+            <batchtest fork="yes" todir="${junit.output.dir}">
                 <fileset dir="target/scala-2.11/test-classes" includes="**/*.class" excludes="common/**,de/**"/>
             </batchtest>
         </junit>
