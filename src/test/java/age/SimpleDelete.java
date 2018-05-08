@@ -46,6 +46,38 @@ public class SimpleDelete extends CommonTest {
         Assert.assertEquals("ensure that no instance remains", 0, read(sf.currentPath()).Ages().size());
     }
 
+    /**
+     * Read age test data and delete age#1.
+     */
+    @Test
+    public void deleteFirst() throws Exception {
+
+        SkillFile sf = SkillFile.open("../../src/test/resources/genbinary/[[empty]]/accept/age-example.sf");
+        sf.changePath(tmpFile("age"));
+        sf.delete(sf.Ages().getByID(1));
+        Age other = sf.Ages().getByID(2);
+        sf.flush();
+
+        Assert.assertEquals("check size", 1, read(sf.currentPath()).Ages().size());
+        Assert.assertEquals("check content", other.getAge(), read(sf.currentPath()).Ages().getByID(1).getAge());
+    }
+
+    /**
+     * Read age test data and delete age#2.
+     */
+    @Test
+    public void deleteSecond() throws Exception {
+
+        SkillFile sf = SkillFile.open("../../src/test/resources/genbinary/[[empty]]/accept/age-example.sf");
+        sf.changePath(tmpFile("age"));
+        sf.delete(sf.Ages().getByID(2));
+        Age other = sf.Ages().getByID(1);
+        sf.flush();
+
+        Assert.assertEquals("check size", 1, read(sf.currentPath()).Ages().size());
+        Assert.assertEquals("check content", other.getAge(), read(sf.currentPath()).Ages().getByID(1).getAge());
+    }
+
     @Test
     public void writeDeleteSome() throws Exception {
         final int count = 100;
