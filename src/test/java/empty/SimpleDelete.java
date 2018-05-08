@@ -5,7 +5,6 @@ import java.nio.file.Path;
 import org.junit.Assert;
 import org.junit.Test;
 
-import age.Age;
 import common.CommonTest;
 import de.ust.skill.common.java.api.SkillFile.Mode;
 import de.ust.skill.common.java.internal.StoragePool;
