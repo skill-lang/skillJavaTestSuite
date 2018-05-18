@@ -7,13 +7,15 @@ import org.junit.Test;
 
 import age.api.SkillFile;
 import de.ust.skill.common.java.api.SkillFile.Mode;
+import unicode.Unicode;
 
 @SuppressWarnings("static-method")
 public class SimpleRead {
 
     @Test
     public void create() throws Exception {
-        // @note: you do not need to delete the file, because it is never created
+        // @note: you do not need to delete the file, because it is never
+        // created
         SkillFile sf = SkillFile.open("age-test.sf", Mode.Create);
         for (Age a : sf.Ages())
             System.out.println(a.prettyString(sf));
@@ -28,6 +30,29 @@ public class SimpleRead {
     }
 
     @Test
+    public void readLazyStrings() throws Exception {
+        SkillFile sf = SkillFile.open("../../src/test/resources/genbinary/[[empty]]/accept/unicode-reference.sf",
+                Mode.Read);
+
+        {
+            boolean found = false;
+            for(String s : sf.Strings())
+                if("☢".equals(s))
+                    found = true;
+            Assert.assertFalse("'☢' has been deserialized.", found);
+        }
+        
+        {
+            sf.loadLazyData();
+            boolean found = false;
+            for(String s : sf.Strings())
+                if("☢".equals(s))
+                    found = true;
+            Assert.assertTrue("'☢' has not been deserialized.", found);
+        }
+    }
+
+    @Test
     public void read() throws Exception {
         SkillFile sf = SkillFile.open("test/age.sf", Mode.Read);
         Iterator<Age> as = sf.Ages().iterator();
@@ -38,16 +63,16 @@ public class SimpleRead {
     @Test
     public void containsChecks() throws Exception {
         SkillFile sf = SkillFile.open("test/age.sf", Mode.Read);
-        for(Age a : sf.Ages())
-        	Assert.assertTrue(sf.contains(a));
+        for (Age a : sf.Ages())
+            Assert.assertTrue(sf.contains(a));
     }
-    
+
     @Test
     public void containsChecks2() throws Exception {
         SkillFile sf = SkillFile.open("test/age.sf", Mode.Read);
         SkillFile sf2 = SkillFile.open("test/age.sf", Mode.Read);
-        for(Age a : sf.Ages())
-        	Assert.assertFalse(sf2.contains(a));
+        for (Age a : sf.Ages())
+            Assert.assertFalse(sf2.contains(a));
     }
 
     @Test
