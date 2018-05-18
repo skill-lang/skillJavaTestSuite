@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import age.api.SkillFile;
 import de.ust.skill.common.java.api.SkillFile.Mode;
-import unicode.Unicode;
 
 @SuppressWarnings("static-method")
 public class SimpleRead {
