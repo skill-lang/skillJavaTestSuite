@@ -22,7 +22,7 @@ public class SimpleDelete extends CommonTest {
     @Test
     public void reflectiveDeletAll() throws Exception {
 
-        SkillFile sf = SkillFile.open("../../src/test/resources/genbinary/[[empty]]/accept/age-example.sf");
+        SkillFile sf = SkillFile.open("../../src/test/resources/genbinary/[[empty]]/accept/age.sf");
         sf.changePath(tmpFile("age"));
 
         SkillState σ = (SkillState) sf;

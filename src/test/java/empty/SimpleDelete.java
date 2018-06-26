@@ -29,14 +29,14 @@ public class SimpleDelete extends CommonTest {
     @Test
     public void deleteFirst() throws Exception {
 
-        SkillFile sf = SkillFile.open("../../src/test/resources/genbinary/[[empty]]/accept/age-example.sf");
+        SkillFile sf = SkillFile.open("../../src/test/resources/genbinary/[[empty]]/accept/age.sf");
         sf.changePath(tmpFile("age"));
         sf.delete(((StoragePool<?, ?>) sf.allTypes().iterator().next()).getByID(1));
         sf.flush();
 
         StoragePool<?, ?> ages = (StoragePool<?, ?>) read(sf.currentPath()).allTypes().iterator().next();
         Assert.assertEquals("check size", 1, ages.size());
-        Assert.assertEquals("check content", -1L, ages.fields().next().get(ages.getByID(1)));
+        Assert.assertEquals("check content", 28L, ages.fields().next().get(ages.getByID(1)));
     }
 
     /**
@@ -45,7 +45,7 @@ public class SimpleDelete extends CommonTest {
     @Test
     public void deleteSecond() throws Exception {
 
-        SkillFile sf = SkillFile.open("../../src/test/resources/genbinary/[[empty]]/accept/age-example.sf");
+        SkillFile sf = SkillFile.open("../../src/test/resources/genbinary/[[empty]]/accept/age.sf");
         sf.changePath(tmpFile("age"));
         sf.delete(((StoragePool<?, ?>) sf.allTypes().iterator().next()).getByID(2));
         sf.flush();
