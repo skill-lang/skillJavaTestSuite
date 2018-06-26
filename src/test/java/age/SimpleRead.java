@@ -33,22 +33,10 @@ public class SimpleRead {
         SkillFile sf = SkillFile.open("../../src/test/resources/genbinary/[[empty]]/accept/unicode-reference.sf",
                 Mode.Read);
 
-        {
-            boolean found = false;
-            for(String s : sf.Strings())
-                if("☢".equals(s))
-                    found = true;
-            Assert.assertFalse("'☢' has been deserialized.", found);
-        }
-        
-        {
-            sf.loadLazyData();
-            boolean found = false;
-            for(String s : sf.Strings())
-                if("☢".equals(s))
-                    found = true;
-            Assert.assertTrue("'☢' has not been deserialized.", found);
-        }
+        Assert.assertFalse("'☢' has been deserialized.", sf.Strings().contains("☢"));
+
+        sf.loadLazyData();
+        Assert.assertTrue("'☢' has not been deserialized.", sf.Strings().contains("☢"));
     }
 
     @Test
