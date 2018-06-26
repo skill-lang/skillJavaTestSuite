@@ -52,7 +52,7 @@ public class SimpleDelete extends CommonTest {
     @Test
     public void deleteFirst() throws Exception {
 
-        SkillFile sf = SkillFile.open("../../src/test/resources/genbinary/[[empty]]/accept/age-example.sf");
+        SkillFile sf = SkillFile.open("../../src/test/resources/genbinary/[[empty]]/accept/age.sf");
         sf.changePath(tmpFile("age"));
         sf.delete(sf.Ages().getByID(1));
         Age other = sf.Ages().getByID(2);
@@ -68,7 +68,7 @@ public class SimpleDelete extends CommonTest {
     @Test
     public void deleteSecond() throws Exception {
 
-        SkillFile sf = SkillFile.open("../../src/test/resources/genbinary/[[empty]]/accept/age-example.sf");
+        SkillFile sf = SkillFile.open("../../src/test/resources/genbinary/[[empty]]/accept/age.sf");
         sf.changePath(tmpFile("age"));
         sf.delete(sf.Ages().getByID(2));
         Age other = sf.Ages().getByID(1);
